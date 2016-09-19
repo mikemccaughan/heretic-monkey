@@ -1,4 +1,4 @@
-System.register(['todo'], function(exports_1, context_1) {
+System.register(['./todo'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var todo_1;
@@ -11,7 +11,7 @@ System.register(['todo'], function(exports_1, context_1) {
         execute: function() {
             class App {
                 constructor() {
-                    this.heading = 'Todos';
+                    this.heading = 'Learning Aurelia: Todos';
                     this.todos = [];
                     this.todoDescription = '';
                 }
