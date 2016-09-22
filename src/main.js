@@ -1,15 +1,25 @@
-System.register([], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
-    function configure(aurelia) {
-        aurelia.use.basicConfiguration();
-        aurelia.start().then(() => aurelia.setRoot());
-    }
-    exports_1("configure", configure);
-    return {
-        setters:[],
-        execute: function() {
-        }
-    }
+import environment from './environment';
+
+//Configure Bluebird Promises.
+//Note: You may want to use environment-specific configuration.
+Promise.config({
+  warnings: {
+    wForgottenReturn: false
+  }
 });
-//# sourceMappingURL=main.js.map
+
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .feature('resources');
+
+  if (environment.debug) {
+    aurelia.use.developmentLogging();
+  }
+
+  if (environment.testing) {
+    aurelia.use.plugin('aurelia-testing');
+  }
+
+  aurelia.start().then(() => aurelia.setRoot());
+}

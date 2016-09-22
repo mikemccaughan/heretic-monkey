@@ -1,18 +1,12 @@
-System.register([], function(exports_1, context_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
-    var Todo;
-    return {
-        setters:[],
-        execute: function() {
-            class Todo {
-                constructor(description) {
-                    this.description = description;
-                    this.done = false;
-                }
-            }
-            exports_1("Todo", Todo);
+    var Todo = (function () {
+        function Todo(description) {
+            this.description = description;
+            this.done = false;
         }
-    }
+        return Todo;
+    }());
+    exports.Todo = Todo;
 });
 //# sourceMappingURL=todo.js.map
