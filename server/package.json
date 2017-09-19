@@ -1,0 +1,14 @@
+{
+  "name": "heretic-server",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,3 @@
+C:\Users\passp\Source\Repos\heretic-monkey\obj\Debug\Heretic-Monkey.com.njsprojResolveAssemblyReference.cache
+C:\Users\passp\Source\Repos\heretic-monkey\obj\Debug\Heretic-Monkey.com.njsproj.CoreCompileInputs.cache
+C:\Users\passp\Source\Repos\heretic-monkey\bin\Microsoft.NodejsTools.WebRole.dll
