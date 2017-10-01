@@ -47,6 +47,7 @@
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="typings.json" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".well-known\" />
