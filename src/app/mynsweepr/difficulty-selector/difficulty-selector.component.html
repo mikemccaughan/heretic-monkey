@@ -1,0 +1,73 @@
+<form name="difficulty-selector" action="" [formGroup]="difficultySelectorForm">
+  <fieldset>
+    <legend>Select Difficulty</legend>
+    <ul class="radio-list">
+      <li>
+        <label class="radio">
+          <input
+            type="radio"
+            value="9"
+            formControlName="value"
+            (change)="difficultySelected()"
+          />
+          <span class="label-text">Easy (9x9)</span>
+        </label>
+      </li>
+      <li>
+        <label class="radio">
+          <input
+            type="radio"
+            value="16"
+            formControlName="value"
+            (change)="difficultySelected()"
+          />
+          <span class="label-text">Moderate (16x16)</span>
+        </label>
+      </li>
+      <li>
+        <label class="radio">
+          <input
+            type="radio"
+            value="30"
+            formControlName="value"
+            (change)="difficultySelected()"
+          />
+          <span class="label-text">Expert (30x16)</span>
+        </label>
+      </li>
+      <li>
+        <label class="radio">
+          <input
+            type="radio"
+            value="-1"
+            formControlName="value"
+            (change)="difficultySelected()"
+          />
+          <span class="label-text"
+            >Custom (<input
+              class="custom-unit"
+              type="number"
+              name="width"
+              placeholder="width"
+              formControlName="width"
+              (change)="difficultySelected()"
+            />
+            x
+            <input
+              class="custom-unit"
+              type="number"
+              name="height"
+              placeholder="height"
+              formControlName="height"
+              (change)="difficultySelected()"
+            />)
+          </span>
+        </label>
+      </li>
+    </ul>
+  </fieldset>
+  <div class="buttons">
+    <button type="button" (click)="saveBoard()">Save Board</button>
+    <button type="button" (click)="loadBoards()">Load Board</button>
+  </div>
+</form>

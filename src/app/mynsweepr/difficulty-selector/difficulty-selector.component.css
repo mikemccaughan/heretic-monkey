@@ -1,0 +1,72 @@
+form {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.buttons {
+  padding: 2vh 0.5vw;
+  margin: 3vh 1vw;
+  display: flex;
+  flex-flow: row wrap;
+}
+.buttons button {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background: green;
+  border: 1px solid silver;
+  color: white;
+}
+.buttons button:last-child {
+  background: blue;
+}
+
+fieldset,
+.fieldset {
+  border: 1px solid black;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  justify-content: center;
+  position: relative;
+  padding: 2vh 1vw;
+  margin: 3vh 2vw;
+  flex: 2 2 auto;
+}
+
+legend,
+.legend {
+  background-color: #fff;
+  flex: none;
+  font-size: smaller;
+  font-weight: 700;
+  position: absolute;
+  top: -0.7rem;
+  left: 2vw;
+  padding: 0 1vw;
+}
+
+.radio-list {
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+.radio-list li {
+  display: flex;
+}
+
+.radio {
+  flex: 0 0 auto;
+  margin: 1vh 1vw;
+}
+
+.radio-size {
+  margin-left: 0.3rem;
+  white-space: nowrap;
+}
+
+.custom-unit {
+  width: 3rem;
+}

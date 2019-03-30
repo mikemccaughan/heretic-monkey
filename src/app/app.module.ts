@@ -1,24 +1,15 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { WellKnownComponent } from './.well-known/.well-known.component';
-import { AcmeChallengeComponent } from './acme-challenge/acme-challenge.component';
-
-const appRoutes: Routes = [];
+import { MynsweeprModule } from './mynsweepr/mynsweepr.module';
+import { MynsweeprComponent } from './mynsweepr/mynsweepr.component';
+import { DifficultySelectorComponent } from './mynsweepr/difficulty-selector/difficulty-selector.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    WellKnownComponent,
-    AcmeChallengeComponent
-  ],
-  imports: [
-    RouterModule.forRoot(appRoutes, { useHash: true }),
-    BrowserModule
-  ],
-  providers: [],
+  declarations: [AppComponent, MynsweeprComponent, DifficultySelectorComponent],
+  imports: [BrowserModule, ReactiveFormsModule, MynsweeprModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

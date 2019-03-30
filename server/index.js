@@ -1,5 +1,5 @@
 const express = require('express');
-const website = process.env.website || '../';
+const website = process.env.website || '.';
 const app = express();
 
 app.use(express.static(website));

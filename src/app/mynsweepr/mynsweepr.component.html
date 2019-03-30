@@ -1,0 +1,139 @@
+<app-difficulty-selector
+  [difficulty]="board.difficulty"
+  (difficultyChanged)="difficultySelected($event)"
+  (loadBoardsRequested)="loadBoards()"
+  (saveBoardRequested)="saveBoard()"
+></app-difficulty-selector>
+<dialog
+  id="load"
+  role="dialog"
+  aria-modal="true"
+  [ngClass]="{ show: dialogs.load }"
+>
+  <header>
+    <h1>Load Board</h1>
+    <button class="close" (click)="closeDialog('load')">🗙</button>
+  </header>
+  <ul>
+    <li *ngFor="let board of savedBoards" class="saved-board">
+      <button (click)="loadBoardToMineboad(board)">
+        <img [src]="board.img" />
+      </button>
+    </li>
+  </ul>
+  <footer></footer>
+</dialog>
+<div class="scoreboard">
+  <div class="timer">
+    <span
+      class="timer-icon"
+      role="img"
+      aria-label="mine representing the number of mines left"
+      >⏱</span
+    >
+    <span class="scoreboard-unit timer-value">{{ board.scoreboard.time }}</span>
+  </div>
+  <div class="remaining">
+    <span
+      class="remaining-icon"
+      role="img"
+      aria-label="clock representing the time elapsed"
+      >💣</span
+    >
+    <span class="scoreboard-unit remaining-value">{{
+      board.scoreboard.remaining
+    }}</span>
+  </div>
+</div>
+<div [ngClass]="board.classes" [ngStyle]="board.styles">
+  <dialog
+    id="won"
+    role="dialog"
+    aria-modal="true"
+    [ngClass]="{ show: dialogs.won, won: true }"
+  >
+    <section>
+      <header>
+        <h1>You won!</h1>
+        <button
+          type="button"
+          class="close"
+          role="button"
+          aria-label="closes the dialog"
+        >
+          🗙
+        </button>
+      </header>
+      <p class="dialog-content" role="img" aria-label="#winning">🎉</p>
+      <footer class="dialog-buttons">
+        <button
+          type="button"
+          class="confirm"
+          role="button"
+          aria-label="indicates winning, closes dialog"
+          (click)="closeDialog('won')"
+        >
+          Super!
+        </button>
+      </footer>
+    </section>
+  </dialog>
+  <dialog
+    id="lost"
+    role="dialog"
+    aria-modal="true"
+    [ngClass]="{ show: dialogs.lost, lost: true }"
+  >
+    <section>
+      <header>
+        <h1>You lost!</h1>
+        <button
+          type="button"
+          class="close"
+          role="button"
+          aria-label="closes the dialog"
+        >
+          🗙
+        </button>
+      </header>
+      <p class="dialog-content" role="img" aria-label="#loser">😞</p>
+      <footer class="dialog-buttons">
+        <button
+          type="button"
+          class="confirm"
+          role="button"
+          aria-label="indicates losing, closes dialog"
+          (click)="closeDialog('lost')"
+        >
+          Fake News!
+        </button>
+      </footer>
+    </section>
+  </dialog>
+  <button
+    *ngFor="let cell of board.cells"
+    [ngClass]="cell.classes"
+    role="button"
+    aria-label="a cell in the mine field"
+    (click)="cellClick($event, cell)"
+    (contextmenu)="cellRightClick($event, cell)"
+    (dblclick)="cellDoubleClick($event, cell)"
+  >
+    <span class="debug">{{ cell.index }}</span>
+    <span class="overlay">
+      <span class="flag" role="img" aria-label="flag">
+        🚩
+      </span>
+      <span class="mine" role="img" aria-label="boom!">
+        💣
+      </span>
+      <span
+        class="nearby"
+        role="img"
+        aria-label="number of nearby cells that have a mine"
+      >
+        {{ cell.nearby }}
+      </span>
+    </span>
+  </button>
+</div>
