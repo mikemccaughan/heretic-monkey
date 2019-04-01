@@ -1,0 +1,22 @@
+<div class="scoreboard">
+  <div class="timer">
+    <span
+      class="timer-icon"
+      role="img"
+      aria-label="mine representing the number of mines left"
+      >⏱</span
+    >
+    <span class="scoreboard-unit timer-value">{{ scoreboard.time }}</span>
+  </div>
+  <div class="remaining">
+    <span
+      class="remaining-icon"
+      role="img"
+      aria-label="clock representing the time elapsed"
+      >💣</span
+    >
+    <span class="scoreboard-unit remaining-value">{{
+      scoreboard.remaining
+    }}</span>
+  </div>
+</div>

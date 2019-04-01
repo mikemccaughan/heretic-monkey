@@ -140,10 +140,20 @@ export class MineboardService {
       const boardId = `savedBoard${Date.now()}`;
       html2canvas(document.body).then(canvas => {
         const imgPng = canvas.toDataURL();
+        // Get only serializable data
+        const boardParts: Partial<Board> = {
+          cells: [...board.cells],
+          cellsByCoords: { ...board.cellsByCoords },
+          difficulty: { ...board.difficulty },
+          scoreboard: {
+            time: board.scoreboard.time,
+            remaining: board.scoreboard.remaining
+          }
+        };
         const boardToSave: SavedBoard = {
           id: boardId,
           img: imgPng,
-          board
+          board: boardParts
         };
         localStorage.setItem(boardId, JSON.stringify(boardToSave));
         resolve(true);

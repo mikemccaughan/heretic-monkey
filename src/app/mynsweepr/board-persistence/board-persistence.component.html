@@ -1,0 +1,17 @@
+<div class="buttons">
+  <button type="button" (click)="saveBoard()" class="save-board">
+    Save Board
+  </button>
+  <button type="button" (click)="loadBoards()" class="load-board">
+    Load Board
+  </button>
+</div>
+<app-dialog id="load" [classes]="{ load: true }" title="Load Board">
+  <ul>
+    <li *ngFor="let board of savedBoards" class="saved-board">
+      <button (click)="loadBoard(board)">
+        <img [src]="board.img" />
+      </button>
+    </li>
+  </ul>
+</app-dialog>

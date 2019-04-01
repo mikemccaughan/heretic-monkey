@@ -1,5 +1,5 @@
 export class Difficulty {
-  value: string;
+  value?: string;
   width?: number;
   height?: number;
   constructor(partial?: Partial<Difficulty>);

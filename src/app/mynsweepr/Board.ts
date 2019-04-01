@@ -1,12 +1,13 @@
 import { Difficulty, Scoreboard, Cell, IClasslist } from './';
 import { EventEmitter } from '@angular/core';
+import { stringify } from 'querystring';
 
 export class Board {
   public difficulty: Difficulty;
   public scoreboard: Scoreboard;
   public cells: Cell[];
-  public cellsByCoords: { [key: string]: Cell };
-  public statusChange: EventEmitter<string>;
+  public cellsByCoords?: { [key: string]: Cell };
+  public statusChange?: EventEmitter<string>;
   private _status: string = null;
   private _hadChange: boolean;
   public get hadChange(): boolean {
@@ -37,10 +38,13 @@ export class Board {
   }
 
   public populateBoardByCoord(): void {
-    this.cellsByCoords = this.cells.reduce(
-      (agg, cel) => (agg[Board.getCoord(cel.x, cel.y)] = cel),
-      {}
+    const props = this.cells.map(
+      cel => [Board.getCoord(cel.x, cel.y), cel] as [string, Cell]
     );
+    this.cellsByCoords = {};
+    for (const prop of props) {
+      this.cellsByCoords[prop[0]] = prop[1];
+    }
   }
 
   get status(): string {

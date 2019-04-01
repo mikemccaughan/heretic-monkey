@@ -5,6 +5,7 @@ import { Board } from './Board';
 import { MineboardService } from './mineboard.service';
 import { SavedBoard } from './SavedBoard';
 import { Cell } from './Cell';
+import { DialogService } from './dialog.service';
 
 @Component({
   selector: 'app-mynsweepr',
@@ -16,22 +17,12 @@ export class MynsweeprComponent {
   public difficultySelectorForm: FormGroup;
   public savedBoards: SavedBoard[];
   public dialogs: { [key: string]: boolean };
-  public rebuildBoardIds: string[] = ['won', 'lost'];
 
-  constructor(private ref: ElementRef, public mineboardSvc: MineboardService) {
+  constructor(
+    public mineboardSvc: MineboardService,
+    public dialogSvc: DialogService
+  ) {
     this.board = this.mineboardSvc.buildBoard(this.statusChanged.bind(this));
-    this.difficultySelectorForm = new FormGroup({
-      value: new FormControl(this.board.difficulty.value),
-      width: new FormControl(this.board.difficulty.width),
-      height: new FormControl(this.board.difficulty.height)
-    });
-    const dialogEntries: [string, boolean][] = Array.from(
-      ref.nativeElement.querySelectorAll('dialog')
-    ).map((el: HTMLDialogElement) => [el.id, false] as [string, boolean]);
-    this.dialogs = dialogEntries.reduce(
-      (agg, cur) => (agg[cur[0]] = cur[1]),
-      {}
-    );
     this.board.hadChange = !this.board.hadChange;
   }
 
@@ -53,11 +44,6 @@ export class MynsweeprComponent {
     this.mineboardSvc.saveBoard(this.board);
   }
 
-  loadBoards() {
-    this.savedBoards = this.mineboardSvc.getSavedBoards();
-    this.openDialog('load');
-  }
-
   loadBoardToMineboad(savedBoard: SavedBoard) {
     this.board = this.mineboardSvc.loadBoard(
       this.statusChanged.bind(this),
@@ -65,41 +51,32 @@ export class MynsweeprComponent {
     );
 
     this.board.hadChange = !this.board.hadChange;
-    this.closeDialog('load');
   }
 
   openDialog(id: string) {
-    this.clearDialogs();
-    this.dialogs[id] = true;
+    this.dialogSvc.open(id);
   }
 
   closeDialog(id: string) {
-    this.clearDialogs();
-    this.dialogs[id] = false;
-    if (this.rebuildBoardIds.includes(id)) {
-      this.board = this.mineboardSvc.buildBoard(
-        this.statusChanged.bind(this),
-        this.board.difficulty
-      );
-    }
+    this.dialogSvc.close(id);
   }
 
-  clearDialogs() {
-    Object.keys(this.dialogs).forEach(key => (this.dialogs[key] = undefined));
+  rebuildBoard(): void {
+    this.board = this.mineboardSvc.buildBoard(
+      this.statusChanged.bind(this),
+      this.board.difficulty
+    );
   }
 
-  cellClick(event: MouseEvent, cell: Cell) {
-    event.preventDefault();
+  cellClick(cell: Cell) {
     this.mineboardSvc.cellReveal(cell);
   }
 
-  cellRightClick(event: MouseEvent, cell: Cell) {
-    event.preventDefault();
+  cellRightClick(cell: Cell) {
     this.mineboardSvc.cellFlag(cell);
   }
 
-  cellDoubleClick(event: MouseEvent, cell: Cell) {
-    event.preventDefault();
+  cellDoubleClick(cell: Cell) {
     this.mineboardSvc.cellRevealAround(cell);
   }
 }
