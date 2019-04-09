@@ -33,17 +33,38 @@ export class MineboardComponent {
   }
 
   cellRightClick(event: MouseEvent, cell: Cell) {
+    window.performance.mark('mineboard.component cellRightClick start');
     event.preventDefault();
     this.cellRightClicked.emit(cell);
+    window.performance.mark('mineboard.component cellRightClick end');
+    window.performance.measure(
+      'mineboard.component cellRightClick',
+      'mineboard.component cellRightClick start',
+      'mineboard.component cellRightClick end'
+    );
   }
 
   cellClick(event: MouseEvent, cell: Cell) {
+    window.performance.mark('mineboard.component cellClick start');
     event.preventDefault();
     this.cellClicked.emit(cell);
+    window.performance.mark('mineboard.component cellClick end');
+    window.performance.measure(
+      'mineboard.component cellClick',
+      'mineboard.component cellClick start',
+      'mineboard.component cellClick end'
+    );
   }
 
   cellDoubleClick(event: MouseEvent, cell: Cell) {
+    window.performance.mark('mineboard.component cellDoubleClick start');
     event.preventDefault();
     this.cellDoubleClicked.emit(cell);
+    window.performance.mark('mineboard.component cellDoubleClick end');
+    window.performance.measure(
+      'mineboard.component cellDoubleClick',
+      'mineboard.component cellDoubleClick start',
+      'mineboard.component cellDoubleClick end'
+    );
   }
 }

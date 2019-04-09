@@ -1,5 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Difficulty } from './';
 import { Board } from './Board';
 import { MineboardService } from './mineboard.service';
@@ -14,7 +13,6 @@ import { DialogService } from './dialog.service';
 })
 export class MynsweeprComponent {
   public board: Board;
-  public difficultySelectorForm: FormGroup;
   public savedBoards: SavedBoard[];
   public dialogs: { [key: string]: boolean };
 
@@ -22,8 +20,15 @@ export class MynsweeprComponent {
     public mineboardSvc: MineboardService,
     public dialogSvc: DialogService
   ) {
+    window.performance.mark('mynsweepr.component construction start');
     this.board = this.mineboardSvc.buildBoard(this.statusChanged.bind(this));
     this.board.hadChange = !this.board.hadChange;
+    window.performance.mark('mynsweepr.component construction end');
+    window.performance.measure(
+      'mynsweepr.component construction',
+      'mynsweepr.component construction start',
+      'mynsweepr.component construction end'
+    );
   }
 
   statusChanged(status: string) {
@@ -33,11 +38,18 @@ export class MynsweeprComponent {
   }
 
   difficultySelected(difficulty: Difficulty) {
+    window.performance.mark('mynsweepr.component difficultySelected start');
     this.board = this.mineboardSvc.buildBoard(
       this.statusChanged.bind(this),
       difficulty
     );
     this.board.hadChange = !this.board.hadChange;
+    window.performance.mark('mynsweepr.component difficultySelected end');
+    window.performance.measure(
+      'mynsweepr.component difficultySelected',
+      'mynsweepr.component difficultySelected start',
+      'mynsweepr.component difficultySelected end'
+    );
   }
 
   saveBoard() {
@@ -45,12 +57,19 @@ export class MynsweeprComponent {
   }
 
   loadBoardToMineboad(savedBoard: SavedBoard) {
+    window.performance.mark('mynsweepr.component loadBoardToMineboad start');
     this.board = this.mineboardSvc.loadBoard(
       this.statusChanged.bind(this),
       savedBoard
     );
 
     this.board.hadChange = !this.board.hadChange;
+    window.performance.mark('mynsweepr.component loadBoardToMineboad end');
+    window.performance.measure(
+      'mynsweepr.component loadBoardToMineboad',
+      'mynsweepr.component loadBoardToMineboad start',
+      'mynsweepr.component loadBoardToMineboad end'
+    );
   }
 
   openDialog(id: string) {
@@ -62,18 +81,39 @@ export class MynsweeprComponent {
   }
 
   rebuildBoard(): void {
+    window.performance.mark('mynsweepr.component rebuildBoard start');
     this.board = this.mineboardSvc.buildBoard(
       this.statusChanged.bind(this),
       this.board.difficulty
     );
+    window.performance.mark('mynsweepr.component rebuildBoard end');
+    window.performance.measure(
+      'mynsweepr.component rebuildBoard',
+      'mynsweepr.component rebuildBoard start',
+      'mynsweepr.component rebuildBoard end'
+    );
   }
 
   cellClick(cell: Cell) {
+    window.performance.mark('mynsweepr.component cellClick start');
     this.mineboardSvc.cellReveal(cell);
+    window.performance.mark('mynsweepr.component cellClick end');
+    window.performance.measure(
+      'mynsweepr.component cellClick',
+      'mynsweepr.component cellClick start',
+      'mynsweepr.component cellClick end'
+    );
   }
 
   cellRightClick(cell: Cell) {
+    window.performance.mark('mynsweepr.component cellRightClick start');
     this.mineboardSvc.cellFlag(cell);
+    window.performance.mark('mynsweepr.component cellRightClick end');
+    window.performance.measure(
+      'mynsweepr.component cellRightClick',
+      'mynsweepr.component cellRightClick start',
+      'mynsweepr.component cellRightClick end'
+    );
   }
 
   cellDoubleClick(cell: Cell) {

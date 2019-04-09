@@ -1,6 +1,5 @@
 import { Difficulty, Scoreboard, Cell, IClasslist } from './';
 import { EventEmitter } from '@angular/core';
-import { stringify } from 'querystring';
 
 export class Board {
   public difficulty: Difficulty;
@@ -20,15 +19,29 @@ export class Board {
 
   constructor(board?: Partial<Board>) {
     if (!board) {
+      window.performance.mark('Board constructor start (no board)');
       this.difficulty = new Difficulty();
       this.scoreboard = new Scoreboard();
       this.cells = [];
+      window.performance.mark('Board constructor end (no board)');
+      window.performance.measure(
+        'Board constructor (no board)',
+        'Board constructor start (no board)',
+        'Board constructor end (no board)'
+      );
     } else {
+      window.performance.mark('Board constructor start (board)');
       this.cells = board.cells.map(cell => new Cell(cell));
       this.populateBoardByCoord();
       this.difficulty = new Difficulty(board.difficulty);
       this.scoreboard = new Scoreboard(board.scoreboard);
       this.scoreboard.remaining = this.getRemaining();
+      window.performance.mark('Board constructor end (board)');
+      window.performance.measure(
+        'Board constructor (board)',
+        'Board constructor start (board)',
+        'Board constructor end (board)'
+      );
     }
     this.statusChange = new EventEmitter<string>();
   }
@@ -38,6 +51,7 @@ export class Board {
   }
 
   public populateBoardByCoord(): void {
+    window.performance.mark('Board populateBoardByCoord start');
     const props = this.cells.map(
       cel => [Board.getCoord(cel.x, cel.y), cel] as [string, Cell]
     );
@@ -45,9 +59,16 @@ export class Board {
     for (const prop of props) {
       this.cellsByCoords[prop[0]] = prop[1];
     }
+    window.performance.mark('Board populateBoardByCoord end');
+    window.performance.measure(
+      'Board populateBoardByCoord',
+      'Board populateBoardByCoord start',
+      'Board populateBoardByCoord end'
+    );
   }
 
   get status(): string {
+    window.performance.mark('Board status start');
     let status = this._status;
     if (this.isFailure()) {
       status = 'lost';
@@ -60,6 +81,12 @@ export class Board {
       this._status = status;
     }
 
+    window.performance.mark('Board status end');
+    window.performance.measure(
+      'Board status',
+      'Board status start',
+      'Board status end'
+    );
     return status;
   }
   set status(value: string) {

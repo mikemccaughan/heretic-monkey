@@ -43,9 +43,10 @@ export class MineboardService {
     hidden?: boolean,
     flag?: boolean
   ): Cell {
+    window.performance.mark('mynsweepr.service createCell start');
     hidden = typeof hidden === 'boolean' ? hidden : true;
     flag = typeof flag === 'boolean' ? flag : false;
-    return new Cell({
+    const cell = new Cell({
       value,
       x,
       y,
@@ -53,16 +54,31 @@ export class MineboardService {
       isHidden: hidden,
       hasFlag: flag
     });
+    window.performance.mark('mynsweepr.service createCell end');
+    window.performance.measure(
+      'mynsweepr.service createCell',
+      'mynsweepr.service createCell start',
+      'mynsweepr.service createCell end'
+    );
+    return cell;
   }
   private sortCells(): void {
+    window.performance.mark('mynsweepr.service sortCells start');
     const isNotSorted = this.board.cells.some((c, i) => c.index !== i);
     if (isNotSorted) {
       this.board.cells = this.board.cells.sort(
         (a, b) => (a.index || 0) - (b.index || 0)
       );
     }
+    window.performance.mark('mynsweepr.service sortCells end');
+    window.performance.measure(
+      'mynsweepr.service sortCells',
+      'mynsweepr.service sortCells start',
+      'mynsweepr.service sortCells end'
+    );
   }
   private initPreboard(): void {
+    window.performance.mark('mynsweepr.service initPreboard start');
     this.preboard = [];
     for (let y = 0; y < this.board.difficulty.height; y++) {
       this.preboard[y] = [];
@@ -70,8 +86,15 @@ export class MineboardService {
         this.preboard[y][x] = 0;
       }
     }
+    window.performance.mark('mynsweepr.service initPreboard end');
+    window.performance.measure(
+      'mynsweepr.service initPreboard',
+      'mynsweepr.service initPreboard start',
+      'mynsweepr.service initPreboard end'
+    );
   }
   private populatePreboard(): void {
+    window.performance.mark('mynsweepr.service populatePreboard start');
     const cellCount =
       this.board.difficulty.width * this.board.difficulty.height;
     const mineCount = Math.floor(cellCount / 6);
@@ -101,8 +124,15 @@ export class MineboardService {
         }
       }
     }
+    window.performance.mark('mynsweepr.service populatePreboard end');
+    window.performance.measure(
+      'mynsweepr.service populatePreboard',
+      'mynsweepr.service populatePreboard start',
+      'mynsweepr.service populatePreboard end'
+    );
   }
   private buildCells(): void {
+    window.performance.mark('mynsweepr.service buildCells start');
     this.board.cells = [];
     let cellIndex = 0;
     for (let y = 0; y < this.board.difficulty.height; y++) {
@@ -118,11 +148,18 @@ export class MineboardService {
       }
     }
     this.board.populateBoardByCoord();
+    window.performance.mark('mynsweepr.service buildCells end');
+    window.performance.measure(
+      'mynsweepr.service buildCells',
+      'mynsweepr.service buildCells start',
+      'mynsweepr.service buildCells end'
+    );
   }
   buildBoard(
     statusChange: (status: string) => void,
     difficulty?: Difficulty
   ): Board {
+    window.performance.mark('mynsweepr.service buildBoard start');
     this.board = new Board();
     this.board.statusChange.subscribe(statusChange);
     this.board.difficulty = new Difficulty(difficulty);
@@ -130,6 +167,12 @@ export class MineboardService {
     this.populatePreboard();
     this.buildCells();
     this.sortCells();
+    window.performance.mark('mynsweepr.service buildBoard end');
+    window.performance.measure(
+      'mynsweepr.service buildBoard',
+      'mynsweepr.service buildBoard start',
+      'mynsweepr.service buildBoard end'
+    );
     return this.board;
   }
   //#endregion board building
@@ -137,6 +180,7 @@ export class MineboardService {
   //#region board load/save
   saveBoard(board: Board): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
+      window.performance.mark('mynsweepr.service saveBoard start');
       const boardId = `savedBoard${Date.now()}`;
       html2canvas(document.body).then(canvas => {
         const imgPng = canvas.toDataURL();
@@ -156,11 +200,18 @@ export class MineboardService {
           board: boardParts
         };
         localStorage.setItem(boardId, JSON.stringify(boardToSave));
+        window.performance.mark('mynsweepr.service saveBoard end');
+        window.performance.measure(
+          'mynsweepr.service saveBoard',
+          'mynsweepr.service saveBoard start',
+          'mynsweepr.service saveBoard end'
+        );
         resolve(true);
       });
     });
   }
   getSavedBoards(): SavedBoard[] {
+    window.performance.mark('mynsweepr.service getSavedBoards start');
     const savedBoards = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -168,14 +219,27 @@ export class MineboardService {
         savedBoards.push(JSON.parse(localStorage.getItem(key)) as SavedBoard);
       }
     }
+    window.performance.mark('mynsweepr.service getSavedBoards end');
+    window.performance.measure(
+      'mynsweepr.service getSavedBoards',
+      'mynsweepr.service getSavedBoards start',
+      'mynsweepr.service getSavedBoards end'
+    );
     return savedBoards;
   }
   loadBoard(
     statusChange: (status: string) => void,
     savedBoard: SavedBoard
   ): Board {
+    window.performance.mark('mynsweepr.service loadBoard start');
     this.board = new Board(savedBoard.board);
     this.board.statusChange.subscribe(statusChange);
+    window.performance.mark('mynsweepr.service loadBoard end');
+    window.performance.measure(
+      'mynsweepr.service loadBoard',
+      'mynsweepr.service loadBoard start',
+      'mynsweepr.service loadBoard end'
+    );
     return this.board;
   }
   //#endregion board load/save
@@ -234,11 +298,18 @@ export class MineboardService {
   }
 
   private getCellsForRevealAround(options: IBoardTraversalOptions): Set<Cell> {
+    window.performance.mark('mynsweepr.service getCellsForRevealAround start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
     options.result = new Set<Cell>([
       ...options.result,
       ...this.board.cells.filter(options.addToResult)
     ]);
+    window.performance.mark('mynsweepr.service getCellsForRevealAround end');
+    window.performance.measure(
+      'mynsweepr.service getCellsForRevealAround',
+      'mynsweepr.service getCellsForRevealAround start',
+      'mynsweepr.service getCellsForRevealAround end'
+    );
 
     return options.result;
   }
@@ -251,6 +322,7 @@ export class MineboardService {
       throw new Error(`No cell`);
     }
 
+    window.performance.mark('mynsweepr.service epicFail start');
     let cellsToUpdate = new Set<Cell>();
     const options: IBoardTraversalOptions = {
       ...this.traversalOptions,
@@ -266,6 +338,12 @@ export class MineboardService {
       wait(100);
       this.board.hadChange = !this.board.hadChange;
     }
+    window.performance.mark('mynsweepr.service epicFail end');
+    window.performance.measure(
+      'mynsweepr.service epicFail',
+      'mynsweepr.service epicFail start',
+      'mynsweepr.service epicFail end'
+    );
   }
 
   private addForEpicWin(cell: Cell, originalCell: Cell): boolean {
@@ -277,6 +355,7 @@ export class MineboardService {
     );
   }
   private getCellsForEpicWin(options: IBoardTraversalOptions): Set<Cell> {
+    window.performance.mark('mynsweepr.service getCellsForEpicWin start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
 
     options.result = new Set<Cell>([
@@ -297,6 +376,12 @@ export class MineboardService {
         ...this.getCellsForEpicWin(options)
       ]);
     }
+    window.performance.mark('mynsweepr.service getCellsForEpicWin end');
+    window.performance.measure(
+      'mynsweepr.service getCellsForEpicWin',
+      'mynsweepr.service getCellsForEpicWin start',
+      'mynsweepr.service getCellsForEpicWin end'
+    );
     return options.result;
   }
   private epicWin(cell: Cell): Cell {
@@ -304,6 +389,7 @@ export class MineboardService {
       throw new Error(`No cell`);
     }
 
+    window.performance.mark('mynsweepr.service epicWin start');
     let cellsToUpdate = new Set<Cell>();
     const options: IBoardTraversalOptions = {
       ...this.traversalOptions,
@@ -320,6 +406,12 @@ export class MineboardService {
       this.board.hadChange = !this.board.hadChange;
       wait(100);
     }
+    window.performance.mark('mynsweepr.service epicWin end');
+    window.performance.measure(
+      'mynsweepr.service epicWin',
+      'mynsweepr.service epicWin start',
+      'mynsweepr.service epicWin end'
+    );
     return cell;
   }
   //#endregion special case board traversal
@@ -329,6 +421,7 @@ export class MineboardService {
     if (!cell) {
       throw new Error(`No cell`);
     }
+    window.performance.mark('mynsweepr.service cellReveal start');
     if (cell.hasMine) {
       // blow up
       this.epicFail(cell);
@@ -344,18 +437,35 @@ export class MineboardService {
       }
     }
     this.startTimer();
+    window.performance.mark('mynsweepr.service cellReveal end');
+    window.performance.measure(
+      'mynsweepr.service cellReveal',
+      'mynsweepr.service cellReveal start',
+      'mynsweepr.service cellReveal end'
+    );
   }
   cellFlag(cell: Cell): void {
+    if (!cell) {
+      throw new Error(`No cell`);
+    }
+    window.performance.mark('mynsweepr.service cellFlag start');
     cell.hasFlag = !cell.hasFlag;
     cell.isHidden = !cell.hasFlag;
     this.board.hadChange = !this.board.hadChange;
     this.startTimer();
+    window.performance.mark('mynsweepr.service cellFlag end');
+    window.performance.measure(
+      'mynsweepr.service cellFlag',
+      'mynsweepr.service cellFlag start',
+      'mynsweepr.service cellFlag end'
+    );
   }
   cellRevealAround(cell: Cell): void {
     if (!cell) {
       throw new Error('cell not provided');
     }
 
+    window.performance.mark('mynsweepr.service cellRevealAround start');
     let cellsToUpdate = new Set<Cell>();
     const options: IBoardTraversalOptions = {
       ...this.traversalOptions,
@@ -371,6 +481,14 @@ export class MineboardService {
       0
     );
     if (numberOfFlags !== cell.nearby) {
+      window.performance.mark(
+        'mynsweepr.service cellRevealAround end (wrong number)'
+      );
+      window.performance.measure(
+        'mynsweepr.service cellRevealAround',
+        'mynsweepr.service cellRevealAround start',
+        'mynsweepr.service cellRevealAround end'
+      );
       return;
     }
 
@@ -380,6 +498,12 @@ export class MineboardService {
       this.cellReveal(cel);
     }
     this.startTimer();
+    window.performance.mark('mynsweepr.service cellRevealAround end');
+    window.performance.measure(
+      'mynsweepr.service cellRevealAround',
+      'mynsweepr.service cellRevealAround start',
+      'mynsweepr.service cellRevealAround end'
+    );
   }
   //#endregion cell interaction
 

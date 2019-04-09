@@ -11,7 +11,7 @@ export class DialogService {
   public register(id: string, component: DialogComponent): void {
     this.components[id] = component;
     this.components[id].closed.subscribe((closedId: string) => {
-      
+
     });
   }
 
