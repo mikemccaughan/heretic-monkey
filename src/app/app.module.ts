@@ -15,7 +15,7 @@ const appRoutes: Routes = [];
     AcmeChallengeComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes, { useHash: true }),
+    RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
     BrowserModule
   ],
   providers: [],
