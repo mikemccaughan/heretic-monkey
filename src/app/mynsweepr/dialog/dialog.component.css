@@ -1,0 +1,52 @@
+dialog {
+  opacity: 0;
+  z-index: 0;
+  display: flex;
+  flex-flow: column wrap;
+  min-width: 50vw;
+  transition: all ease-in 250ms;
+}
+
+dialog.show {
+  opacity: 1;
+  z-index: 10;
+}
+
+dialog.lost,
+dialog.won {
+  min-width: 75%;
+  max-width: 100%;
+}
+
+dialog header {
+  position: relative;
+}
+
+dialog header .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 1px solid black;
+  min-height: 27px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+dialog section {
+  width: 100%;
+}
+
+dialog h1 {
+  font-size: normal;
+  margin: 0;
+}
+
+dialog.load {
+  min-width: 0;
+  max-width: 50vw;
+}

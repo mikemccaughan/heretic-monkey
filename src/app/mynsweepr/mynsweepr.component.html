@@ -1,0 +1,19 @@
+<div class="difficulty-persistence">
+  <app-difficulty-selector
+    [difficulty]="board.difficulty"
+    (difficultyChanged)="difficultySelected($event)"
+  ></app-difficulty-selector>
+  <app-board-persistence
+    (saveBoardRequested)="saveBoard()"
+    (loadBoardRequested)="loadBoardToMineboad($event)"
+  ></app-board-persistence>
+</div>
+<app-scoreboard [scoreboard]="board.scoreboard"></app-scoreboard>
+<app-mineboard
+  [board]="board"
+  (cellClicked)="cellClick($event)"
+  (cellDoubleClicked)="cellDoubleClick($event)"
+  (cellRightClicked)="cellRightClick($event)"
+  (dialogCloseRequest)="closeDialog($event)"
+  (rebuildBoardRequested)="rebuildBoard()"
+></app-mineboard>

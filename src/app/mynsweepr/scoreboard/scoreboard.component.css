@@ -1,0 +1,10 @@
+.scoreboard {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 2vh auto;
+}
+
+.scoreboard-unit {
+  margin: 0 1vw;
+}
