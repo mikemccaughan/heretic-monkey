@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{07c5e291-9185-4e40-9732-430f9503aa9a}</ProjectGuid>
     <ProjectHome />
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
     <StartupFile />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -52,7 +52,6 @@
   <ItemGroup>
     <Folder Include=".well-known\" />
     <Folder Include=".well-known\acme-challenge\" />
-    <Folder Include="Heretic-Monkey.com" />
     <Folder Include="src\" />
     <Folder Include="src\app\" />
     <Folder Include="src\app\.well-known\" />
