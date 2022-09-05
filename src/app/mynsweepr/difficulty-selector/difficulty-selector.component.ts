@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Difficulty } from '../Difficulty';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-difficulty-selector',
@@ -10,10 +10,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class DifficultySelectorComponent {
   constructor() {
     this.difficulty = new Difficulty();
-    this.difficultySelectorForm = new FormGroup({
-      value: new FormControl(this.difficulty.value),
-      width: new FormControl(this.difficulty.width),
-      height: new FormControl(this.difficulty.height)
+    this.difficultySelectorForm = new UntypedFormGroup({
+      value: new UntypedFormControl(this.difficulty.value),
+      width: new UntypedFormControl(this.difficulty.width),
+      height: new UntypedFormControl(this.difficulty.height)
     });
     this.difficultyChanged = new EventEmitter<Difficulty>();
   }
@@ -22,7 +22,7 @@ export class DifficultySelectorComponent {
   @Output()
   public difficultyChanged: EventEmitter<Difficulty>;
 
-  public difficultySelectorForm: FormGroup;
+  public difficultySelectorForm: UntypedFormGroup;
 
   difficultySelected() {
     this.difficulty = new Difficulty(this.difficultySelectorForm.value);
