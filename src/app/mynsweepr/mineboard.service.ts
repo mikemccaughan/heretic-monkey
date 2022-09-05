@@ -3,7 +3,6 @@ import { Difficulty, Cell, Direction, IBoardTraversalOptions } from '.';
 import { Board } from './Board';
 import { SavedBoard } from './SavedBoard';
 import { wait } from './Timer';
-import * as html2canvas from 'html2canvas';
 
 @Injectable({
   providedIn: 'root'
@@ -181,7 +180,7 @@ export class MineboardService {
   saveBoard(board: Board): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       window.performance.mark('mynsweepr.service saveBoard start');
-      const boardId = `savedBoard${Date.now()}`;
+      const boardId = `savedBoard${Date.now()}`;/*
       html2canvas(document.body).then(canvas => {
         const imgPng = canvas.toDataURL();
         // Get only serializable data
@@ -207,7 +206,7 @@ export class MineboardService {
           'mynsweepr.service saveBoard end'
         );
         resolve(true);
-      });
+      });*/
     });
   }
   getSavedBoards(): SavedBoard[] {
@@ -516,3 +515,4 @@ export class MineboardService {
   }
   //#endregion timer
 }
+w

@@ -15,8 +15,8 @@ import { BoardPersistenceComponent } from './board-persistence/board-persistence
     DifficultySelectorComponent,
     ScoreboardComponent,
     MineboardComponent,
+    BoardPersistenceComponent,
     DialogComponent,
-    BoardPersistenceComponent
   ],
   providers: [MineboardService],
   imports: [CommonModule, ReactiveFormsModule],
