@@ -1,11 +1,10 @@
-const express = require('express');
-const website = process.env.website || 'dist';
-const app = express();
-
+var express = require('express');
+var website = process.env.website || require('path').resolve('../dist');
+var app = express();
+console.log(website);
 app.use(express.static(website));
-app.get('*', (req, res) => {
-  res.sendFile('index.html', { root: website });
+app.get('*', function (req, res) {
+    res.sendFile('index.html', { root: website });
 });
-
-const port = process.env.port || '8118';
-app.listen(port, () => console.log(`app running on port ${port}`));
+var port = process.env.port || '8118';
+app.listen(port, function () { return console.log("app running on port ".concat(port)); });

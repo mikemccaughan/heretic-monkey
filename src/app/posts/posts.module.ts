@@ -6,7 +6,10 @@ import { WebComponentsComponent } from './web-components/web-components.componen
 
 
 @NgModule({
-  declarations: [PostsComponent, WebComponentsComponent],
+  declarations: [
+    PostsComponent,
+    WebComponentsComponent
+  ],
   imports: [
     CommonModule
   ]

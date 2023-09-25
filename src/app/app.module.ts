@@ -25,7 +25,7 @@ const appRoutes: Routes = [
     AcmeChallengeComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy', enableTracing: true }),
+    RouterModule.forRoot(appRoutes, { useHash: true, enableTracing: true }),
     BrowserModule,
     AppCommonModule
   ],

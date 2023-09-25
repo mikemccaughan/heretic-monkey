@@ -19,7 +19,10 @@ import { BoardPersistenceComponent } from './board-persistence/board-persistence
     DialogComponent,
   ],
   providers: [MineboardService],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   exports: [
     MynsweeprComponent,
     DifficultySelectorComponent,
