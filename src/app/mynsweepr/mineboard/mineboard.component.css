@@ -30,8 +30,9 @@
   position: relative;
 }
 
-.cell:active {
-  outline: none;
+.cell:active,
+.cell:focus {
+  outline: 2px solid #0000FF55;
 }
 
 .cell .debug {

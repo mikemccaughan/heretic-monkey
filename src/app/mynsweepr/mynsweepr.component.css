@@ -1,13 +1,13 @@
 .difficulty-persistence {
   display: flex;
   flex-flow: row wrap;
-  width: 100%;
+  width: 98vw;
 }
 
 app-difficulty-selector {
-  flex: 3 3 80vw;
+  flex: 0 0 78vw;
 }
 
 app-board-persistence {
-  flex: 1 1 auto;
+  flex: 0 0 20vw;
 }

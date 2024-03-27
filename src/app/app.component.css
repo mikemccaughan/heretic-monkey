@@ -1,0 +1,9 @@
+nav {
+  display: flex;
+  flex-flow: column nowrap;
+  a {
+    display: list-item;
+    list-style: disc;
+    text-indent: 1rem;
+  }
+}

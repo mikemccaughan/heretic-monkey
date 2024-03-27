@@ -26,6 +26,8 @@ export class DialogComponent implements OnInit {
   public title: string;
   @Input()
   public classes: IClasslist;
+  @Input()
+  public autoFocusSelector: string;
   @Output()
   public closed: EventEmitter<string> = new EventEmitter<string>();
 
@@ -35,6 +37,9 @@ export class DialogComponent implements OnInit {
 
   open() {
     this.classes.show = true;
+    if (typeof this.autoFocusSelector === 'string' && this.autoFocusSelector.length > 0 && this.element.nativeElement.querySelector(this.autoFocusSelector) !== null) {
+      this.element.nativeElement.querySelector(this.autoFocusSelector).focus();
+    }
   }
 
   close() {
