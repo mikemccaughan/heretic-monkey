@@ -334,8 +334,7 @@ export class MineboardService {
 
     for (const cel of cellsToUpdate) {
       cel.isHidden = false;
-      wait(100);
-      this.board.hadChange = !this.board.hadChange;
+      wait(100).then(() => this.board.hadChange = !this.board.hadChange);
     }
     window.performance.mark('mynsweepr.service epicFail end');
     window.performance.measure(
@@ -402,8 +401,7 @@ export class MineboardService {
 
     for (const cel of cellsToUpdate) {
       cel.isHidden = false;
-      this.board.hadChange = !this.board.hadChange;
-      wait(100);
+      wait(100).then(() => this.board.hadChange = !this.board.hadChange);
     }
     window.performance.mark('mynsweepr.service epicWin end');
     window.performance.measure(
@@ -431,8 +429,7 @@ export class MineboardService {
         this.epicWin(cell);
       } else {
         cell.isHidden = false;
-        wait(100);
-        this.board.hadChange = !this.board.hadChange;
+        wait(100).then(() => this.board.hadChange = !this.board.hadChange);
       }
     }
     this.startTimer();
