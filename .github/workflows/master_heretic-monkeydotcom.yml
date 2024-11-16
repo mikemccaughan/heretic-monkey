@@ -31,7 +31,7 @@ jobs:
         run: npm install -g typescript
 
       - name: Transpile Server
-        run: tsc -p server/tsconfig.json
+        run: tsc -p server\tsconfig.json
 
       - name: Build App
         run: ng build -c production
