@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         run: npm install -g typescript
 
       - name: Transpile Server
-        run: tsc -p server\tsconfig.json
+        run: tsc -p server/tsconfig.json
 
       - name: Build App
         run: ng build -c production
@@ -43,7 +43,7 @@ jobs:
           path: '/dist/**'
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Production'
