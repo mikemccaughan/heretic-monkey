@@ -36,11 +36,14 @@ jobs:
       - name: Build App
         run: ng build -c production
 
+      - name: Zip artifact for deployment
+        run: tar -zcf dist.zip dist && rm -r dist
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: '/dist/**'
+          path: 'dist.zip'
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,7 +59,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app
-      
+
+      - name: Unzip artifact for deployment
+        run: tar -xf dist.zip dist
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -71,4 +77,4 @@ jobs:
           app-name: 'heretic-monkeydotcom'
           slot-name: 'Production'
           package: .
-          
+
