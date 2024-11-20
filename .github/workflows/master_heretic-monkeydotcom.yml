@@ -30,11 +30,11 @@ jobs:
       - name: Install TypeScript
         run: npm install -g typescript
 
-      - name: Transpile Server
-        run: tsc -p server/tsconfig.json
-
       - name: Build App
         run: ng build -c production
+
+      - name: Transpile Server
+        run: tsc -p server/tsconfig.json
 
       - name: Zip artifact for deployment
         run: tar -zcf dist.zip dist && rm -r dist
