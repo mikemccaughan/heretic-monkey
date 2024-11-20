@@ -5,11 +5,11 @@ import { Scoreboard } from '../Scoreboard';
     selector: 'app-scoreboard',
     templateUrl: './scoreboard.component.html',
     styleUrls: ['./scoreboard.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ScoreboardComponent {
   constructor() {}
 
   @Input()
-  public scoreboard: Scoreboard;
+  public scoreboard: Scoreboard = new Scoreboard();
 }

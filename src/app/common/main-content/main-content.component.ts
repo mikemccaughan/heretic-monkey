@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-main-content',
     templateUrl: './main-content.component.html',
     styleUrls: ['./main-content.component.css'],
-    standalone: false
+    standalone: true
 })
 export class MainContentComponent implements OnInit {
 

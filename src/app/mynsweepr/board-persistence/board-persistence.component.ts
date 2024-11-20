@@ -2,12 +2,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SavedBoard } from '../SavedBoard';
 import { MineboardService } from '../mineboard.service';
 import { DialogService } from '../dialog.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-board-persistence',
     templateUrl: './board-persistence.component.html',
     styleUrls: ['./board-persistence.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [DialogComponent, NgFor]
 })
 export class BoardPersistenceComponent implements OnInit {
   constructor(

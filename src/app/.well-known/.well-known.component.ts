@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
     selector: 'app-.well-known',
     template: '',
-    standalone: false
+    standalone: true
 })
 export class WellKnownComponent implements OnInit {
 

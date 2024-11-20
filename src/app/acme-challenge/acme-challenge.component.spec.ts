@@ -8,8 +8,8 @@ describe('AcmeChallengeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AcmeChallengeComponent ]
-    })
+    imports: [AcmeChallengeComponent]
+})
     .compileComponents();
   }));
 

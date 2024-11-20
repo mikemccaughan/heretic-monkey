@@ -10,23 +10,21 @@ import { DialogComponent } from './dialog/dialog.component';
 import { BoardPersistenceComponent } from './board-persistence/board-persistence.component';
 
 @NgModule({
-  declarations: [
-    MynsweeprComponent,
-    DifficultySelectorComponent,
-    ScoreboardComponent,
-    MineboardComponent,
-    BoardPersistenceComponent,
-    DialogComponent,
-  ],
-  providers: [MineboardService],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    MynsweeprComponent,
-    DifficultySelectorComponent,
-    ScoreboardComponent
-  ]
+    providers: [MineboardService],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MynsweeprComponent,
+        DifficultySelectorComponent,
+        ScoreboardComponent,
+        MineboardComponent,
+        BoardPersistenceComponent,
+        DialogComponent
+    ],
+    exports: [
+        MynsweeprComponent,
+        DifficultySelectorComponent,
+        ScoreboardComponent
+    ]
 })
 export class MynsweeprModule {}

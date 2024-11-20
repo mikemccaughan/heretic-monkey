@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import { IClasslist } from '../IClasslist';
 import { DialogService } from '../dialog.service';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [NgClass]
 })
 export class DialogComponent implements OnInit {
   constructor(

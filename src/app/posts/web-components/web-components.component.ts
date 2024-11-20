@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-web-components',
     templateUrl: './web-components.component.html',
     styleUrls: ['./web-components.component.css'],
-    standalone: false
+    standalone: true
 })
 export class WebComponentsComponent implements OnInit {
 

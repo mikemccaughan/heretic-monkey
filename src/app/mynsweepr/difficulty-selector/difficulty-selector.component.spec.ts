@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DifficultySelectorComponent } from './difficulty-selector.component';
 
@@ -6,12 +6,12 @@ describe('DifficultySelectorComponent', () => {
   let component: DifficultySelectorComponent;
   let fixture: ComponentFixture<DifficultySelectorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ DifficultySelectorComponent ]
-    })
+    imports: [DifficultySelectorComponent]
+})
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DifficultySelectorComponent);

@@ -5,12 +5,17 @@ import { MineboardService } from './mineboard.service';
 import { SavedBoard } from './SavedBoard';
 import { Cell } from './Cell';
 import { DialogService } from './dialog.service';
+import { DifficultySelectorComponent } from './difficulty-selector/difficulty-selector.component';
+import { BoardPersistenceComponent } from './board-persistence/board-persistence.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+import { MineboardComponent } from './mineboard/mineboard.component';
 
 @Component({
     selector: 'app-mynsweepr',
     templateUrl: './mynsweepr.component.html',
     styleUrls: ['./mynsweepr.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent]
 })
 export class MynsweeprComponent {
   public board: Board;
