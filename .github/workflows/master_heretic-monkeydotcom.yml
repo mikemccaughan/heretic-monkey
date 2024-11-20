@@ -63,8 +63,8 @@ jobs:
       - name: Unzip artifact for deployment
         run: tar -xf dist.zip dist
 
-      - name: Move server code down to site
-        run: mv dist/server/* ../
+      - name: Move server code down to wwwroot
+        run: mv dist/server/* ./
 
       - name: Move client code down to wwwroot
         run: mv dist/browser/* ./
@@ -84,3 +84,5 @@ jobs:
           slot-name: 'Production'
           package: .
 
+      - name: Automatically run node index.js
+        run: /usr/bin/az webapp config set --resource-group heretic-monkey.com --name heretic-monkeydotcom --startup-file "pm2 start index.js --no-daemon"
