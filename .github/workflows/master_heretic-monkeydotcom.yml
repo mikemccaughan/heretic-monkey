@@ -63,6 +63,12 @@ jobs:
       - name: Unzip artifact for deployment
         run: tar -xf dist.zip dist
 
+      - name: Move server code down to site
+        run: mv dist/server/* ../
+
+      - name: Move client code down to wwwroot
+        run: mv dist/browser/* ./
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
