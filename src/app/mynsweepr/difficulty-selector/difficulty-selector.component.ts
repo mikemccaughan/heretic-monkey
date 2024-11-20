@@ -3,9 +3,10 @@ import { Difficulty } from '../Difficulty';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-difficulty-selector',
-  templateUrl: './difficulty-selector.component.html',
-  styleUrls: ['./difficulty-selector.component.css']
+    selector: 'app-difficulty-selector',
+    templateUrl: './difficulty-selector.component.html',
+    styleUrls: ['./difficulty-selector.component.css'],
+    standalone: false
 })
 export class DifficultySelectorComponent {
   constructor() {

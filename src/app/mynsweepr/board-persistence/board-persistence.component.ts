@@ -4,9 +4,10 @@ import { MineboardService } from '../mineboard.service';
 import { DialogService } from '../dialog.service';
 
 @Component({
-  selector: 'app-board-persistence',
-  templateUrl: './board-persistence.component.html',
-  styleUrls: ['./board-persistence.component.css']
+    selector: 'app-board-persistence',
+    templateUrl: './board-persistence.component.html',
+    styleUrls: ['./board-persistence.component.css'],
+    standalone: false
 })
 export class BoardPersistenceComponent implements OnInit {
   constructor(

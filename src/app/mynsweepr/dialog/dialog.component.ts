@@ -10,9 +10,10 @@ import { IClasslist } from '../IClasslist';
 import { DialogService } from '../dialog.service';
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.css']
+    selector: 'app-dialog',
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.css'],
+    standalone: false
 })
 export class DialogComponent implements OnInit {
   constructor(

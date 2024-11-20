@@ -7,9 +7,10 @@ import { Cell } from './Cell';
 import { DialogService } from './dialog.service';
 
 @Component({
-  selector: 'app-mynsweepr',
-  templateUrl: './mynsweepr.component.html',
-  styleUrls: ['./mynsweepr.component.css']
+    selector: 'app-mynsweepr',
+    templateUrl: './mynsweepr.component.html',
+    styleUrls: ['./mynsweepr.component.css'],
+    standalone: false
 })
 export class MynsweeprComponent {
   public board: Board;

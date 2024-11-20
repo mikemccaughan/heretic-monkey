@@ -5,9 +5,10 @@ import { Cell } from '..';
 import { DialogService } from '../dialog.service';
 
 @Component({
-  selector: 'app-mineboard',
-  templateUrl: './mineboard.component.html',
-  styleUrls: ['./mineboard.component.css']
+    selector: 'app-mineboard',
+    templateUrl: './mineboard.component.html',
+    styleUrls: ['./mineboard.component.css'],
+    standalone: false
 })
 export class MineboardComponent {
   public rebuildBoardIds: string[] = ['won', 'lost'];
