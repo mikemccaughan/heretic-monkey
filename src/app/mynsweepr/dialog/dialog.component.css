@@ -19,18 +19,18 @@ dialog.won {
 }
 
 dialog header {
-  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 dialog header .close {
-  position: absolute;
-  top: 0;
-  right: 0;
   background: transparent;
   border: 1px solid black;
-  min-height: 27px;
+  height: 27px;
   font-size: 16px;
   line-height: 1;
+  flex: 0 1 27px;
 }
 
 dialog::backdrop {
@@ -42,11 +42,12 @@ dialog section {
 }
 
 dialog h1 {
-  font-size: normal;
+  font-size: medium;
   margin: 0;
+  flex: 1 0 auto;
 }
 
 dialog.load {
-  min-width: 0;
+  min-width: 30vw;
   max-width: 50vw;
 }

@@ -1,0 +1,28 @@
+<h1>Mynsweepr - using Angular Signals</h1>
+<div class="difficulty-persistence">
+  <mynsweepr-signals-difficulty-selector
+    [difficulty]="board.difficulty"
+    (difficultyChanged)="difficultySelected()"
+  ></mynsweepr-signals-difficulty-selector>
+  <mynsweepr-signals-board-persistence
+    (saveBoardRequested)="saveBoard()"
+    (loadBoardRequested)="loadBoardToMineboard($event)"
+  ></mynsweepr-signals-board-persistence>
+</div>
+<mynsweepr-signals-scoreboard
+  [scoreboard]="board.scoreboard"
+></mynsweepr-signals-scoreboard>
+<div class="score-persistence-mineboard">
+  <mynsweepr-signals-score-persistence
+    [scores]="board.scores"
+    (scoresChanged)="scoresChanged()"
+  ></mynsweepr-signals-score-persistence>
+  <mynsweepr-signals-mineboard
+    [board]="board"
+    (cellClicked)="cellClick($event)"
+    (cellDoubleClicked)="cellDoubleClick($event)"
+    (cellRightClicked)="cellRightClick($event)"
+    (dialogCloseRequest)="closeDialog('a')"
+    (rebuildBoardRequested)="rebuildBoard()"
+  ></mynsweepr-signals-mineboard>
+</div>

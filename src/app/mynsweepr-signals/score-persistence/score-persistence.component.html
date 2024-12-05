@@ -1,0 +1,28 @@
+<div class="score-persistence">
+  <h3>High Score</h3>
+  <ul class="score-list">
+    <li class="score-list-header">
+      <span>Difficulty</span>
+      <span>Score</span>
+    </li>
+    @for (score of highScore; track score.id) {
+      <li class="score">
+        <span>{{ (score.difficulty?.width ?? 'N/A') }} x {{ (score.difficulty?.height ?? 'N/A') }}</span>
+        <span>{{ score.score }}</span>
+      </li>
+    }
+  </ul>
+  <h3>5 Best Winning Scores</h3>
+  <ul class="score-list">
+    <li class="score-list-header">
+      <span>Difficulty</span>
+      <span>Score</span>
+    </li>
+    @for (score of displayScores; track score.id) {
+      <li class="score">
+        <span>{{ (score.difficulty?.width ?? 'N/A') }} x {{ (score.difficulty?.height ?? 'N/A') }}</span>
+        <span>{{ score.score }}</span>
+      </li>
+    }
+  </ul>
+</div>

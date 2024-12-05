@@ -1,0 +1,55 @@
+.buttons {
+  padding: 2vh 0.5vw;
+  margin: 3vh 1vw;
+  display: flex;
+  flex-flow: row wrap;
+}
+.buttons button {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background: green;
+  border: 1px solid silver;
+  color: white;
+}
+.buttons button:last-child {
+  background: blue;
+}
+
+mynsweepr-signals-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 25vh;
+}
+
+ul {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.saved-board, .no-board {
+  max-width: 100%;
+  list-style: none;
+}
+
+.no-board {
+  background: #ffcaca;
+  color: black;
+  border: 1px solid red;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.saved-board button {
+  background: #fff;
+  border: 1px solid black;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.saved-board img {
+  max-width: 100%;
+}

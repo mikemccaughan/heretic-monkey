@@ -1,7 +1,46 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "project": {
-    "name": "heretic-monkey"
+  "version": 1,
+  "projects": {
+    "heretic-monkey": {
+      "projectType": "application",
+      "prefix": "app",
+      "root": "./",
+      "sourceRoot": "./src",
+      "architect": {
+        "target": {
+          "builder": "@angular/build:application",
+          "options": {
+            "assets": [
+              "assets",
+              "favicon.ico",
+              {
+                "glob": "index.js",
+                "input": "../server/",
+                "output": "./"
+              },
+              {
+                "glob": "package.json",
+                "input": "../server/",
+                "output": "./"
+              }
+            ],
+            "index": "index.html",
+            "polyfills": [
+              "./src/polyfills.ts"
+            ],
+            "styles": [
+              "./src/styles.css"
+            ],
+            "scripts": [],
+            "outputPath": "./dist",
+            "outputMode": "static",
+            "server": false,
+            "tsConfig": "./src/tsconfig.app.json"
+          }
+        }
+      }
+    }
   },
   "apps": [
     {

@@ -47,6 +47,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "dev": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false
             }
           }
         },
@@ -58,6 +66,9 @@
           "configurations": {
             "production": {
               "buildTarget": "HereticMonkey:build:production"
+            },
+            "dev": {
+              "buildTarget": "HereticMonkey:build:dev"
             }
           }
         },

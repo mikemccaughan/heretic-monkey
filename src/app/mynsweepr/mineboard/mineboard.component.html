@@ -1,11 +1,10 @@
 <div [ngClass]="board.classes" [ngStyle]="board.styles">
-  <app-dialog [id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
+  <app-dialog [dialog-id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#winning">🎉</p>
     <footer class="dialog-buttons">
       <button
         type="button"
         class="confirm"
-        role="button"
         aria-label="indicates winning, closes dialog"
         (click)="closeDialog('won')"
       >
@@ -13,13 +12,12 @@
       </button>
     </footer>
   </app-dialog>
-  <app-dialog [id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
+  <app-dialog [dialog-id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#loser">😞</p>
     <footer class="dialog-buttons">
       <button
         type="button"
         class="confirm"
-        role="button"
         aria-label="indicates losing, closes dialog"
         (click)="closeDialog('lost')"
       >
@@ -30,8 +28,9 @@
   <button
     *ngFor="let cell of board.cells"
     [ngClass]="cell.classes"
-    role="button"
-    [attr.aria-label]="'a cell in the mine field' + (cell.hasFlag ? ' which is flagged as having a mine' : cell.isHidden ? '' : cell.hasMine ? ' which has a mine!' : cell.nearby ? ' and has ' + (cell.nearby === 1 ? 'one mine' : cell.nearby + ' mines') + ' nearby!' : ' and has no mines nearby.')"
+    type="button"
+    [attr.aria-label]="cell.label"
+    [title]="cell.label"
     (click)="cellClick($event, cell)"
     (contextmenu)="cellRightClick($event, cell)"
     (dblclick)="cellDoubleClick($event, cell)"

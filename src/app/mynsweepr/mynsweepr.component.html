@@ -5,15 +5,18 @@
   ></app-difficulty-selector>
   <app-board-persistence
     (saveBoardRequested)="saveBoard()"
-    (loadBoardRequested)="loadBoardToMineboad($event)"
+    (loadBoardRequested)="loadBoardToMineboard($event)"
   ></app-board-persistence>
 </div>
 <app-scoreboard [scoreboard]="board.scoreboard"></app-scoreboard>
-<app-mineboard
-  [board]="board"
-  (cellClicked)="cellClick($event)"
-  (cellDoubleClicked)="cellDoubleClick($event)"
-  (cellRightClicked)="cellRightClick($event)"
-  (dialogCloseRequest)="closeDialog('a')"
-  (rebuildBoardRequested)="rebuildBoard()"
-></app-mineboard>
+<div class="score-persistence-mineboard">
+  <app-score-persistence [scores]="board.scores" (scoresChanged)="scoresChanged()"></app-score-persistence>
+  <app-mineboard
+    [board]="board"
+    (cellClicked)="cellClick($event)"
+    (cellDoubleClicked)="cellDoubleClick($event)"
+    (cellRightClicked)="cellRightClick($event)"
+    (dialogCloseRequest)="closeDialog('a')"
+    (rebuildBoardRequested)="rebuildBoard()"
+  ></app-mineboard>
+</div>

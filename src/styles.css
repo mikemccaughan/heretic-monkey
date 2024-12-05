@@ -3,7 +3,10 @@
   --size-icon: calc(var(--size-mine) - 12px);
 }
 
-* {
+/* All of the HTML elements used on this site. TODO: Keep up to date! */
+html, body, div, span, p, a, button, i, em, strong, section, main, header,
+footer, small, ul, li, h1, h2, h3, nav, img, dialog, form, fieldset, legend,
+label, input {
   box-sizing: border-box;
 }
 

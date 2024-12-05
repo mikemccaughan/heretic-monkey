@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Difficulty } from './';
+import { Difficulty, ScoreList } from './';
 import { Board } from './Board';
 import { MineboardService } from './mineboard.service';
 import { SavedBoard } from './SavedBoard';
@@ -9,13 +9,14 @@ import { DifficultySelectorComponent } from './difficulty-selector/difficulty-se
 import { BoardPersistenceComponent } from './board-persistence/board-persistence.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { MineboardComponent } from './mineboard/mineboard.component';
+import { ScorePersistenceComponent } from "./score-persistence/score-persistence.component";
 
 @Component({
     selector: 'app-mynsweepr',
     templateUrl: './mynsweepr.component.html',
     styleUrls: ['./mynsweepr.component.css'],
     standalone: true,
-    imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent]
+    imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent, ScorePersistenceComponent]
 })
 export class MynsweeprComponent {
   public board: Board;
@@ -37,7 +38,12 @@ export class MynsweeprComponent {
     );
   }
 
+  scoresChanged() {
+    console.log('MynsweeprComponent: scoresChanged: scores changed?');
+  }
+
   statusChanged(status: string) {
+    this.board.scoresChange.emit();
     if (status && status.length) {
       this.openDialog(status);
     }
@@ -62,19 +68,19 @@ export class MynsweeprComponent {
     this.mineboardSvc.saveBoard(this.board);
   }
 
-  loadBoardToMineboad(savedBoard: SavedBoard) {
-    window.performance.mark('mynsweepr.component loadBoardToMineboad start');
+  loadBoardToMineboard(savedBoard: SavedBoard) {
+    window.performance.mark('mynsweepr.component loadBoardToMineboard start');
     this.board = this.mineboardSvc.loadBoard(
       this.statusChanged.bind(this),
       savedBoard
     );
 
     this.board.hadChange = !this.board.hadChange;
-    window.performance.mark('mynsweepr.component loadBoardToMineboad end');
+    window.performance.mark('mynsweepr.component loadBoardToMineboard end');
     window.performance.measure(
-      'mynsweepr.component loadBoardToMineboad',
-      'mynsweepr.component loadBoardToMineboad start',
-      'mynsweepr.component loadBoardToMineboad end'
+      'mynsweepr.component loadBoardToMineboard',
+      'mynsweepr.component loadBoardToMineboard start',
+      'mynsweepr.component loadBoardToMineboard end'
     );
   }
 

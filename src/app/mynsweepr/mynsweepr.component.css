@@ -11,3 +11,22 @@ app-difficulty-selector {
 app-board-persistence {
   flex: 0 0 20vw;
 }
+
+.score-persistence-mineboard {
+  --max-small-width: clamp(100px, 6vw, 20vw);
+  --max-large-width: clamp(1260px, 78vw, 78vw);
+  display: flex;
+  flex-flow: row wrap;
+  width: 98vw;
+}
+
+app-score-persistence {
+  flex: 0 1 var(--max-small-width);
+}
+
+app-mineboard {
+  flex: 1 0 var(--max-large-width);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}

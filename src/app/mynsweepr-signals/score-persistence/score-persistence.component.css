@@ -1,0 +1,24 @@
+.score-persistence {
+  max-width: var(--max-small-width);
+  h3 {
+    max-width: var(--max-small-width);
+  }
+}
+
+ul.score-list {
+  padding: 0;
+  list-style-type: none;
+  min-width: 200px;
+  display: table;
+  li.score-list-header {
+    display: table-header-group;
+  }
+  li.score {
+    display: table-row;
+  }
+  li:is(.score-list-header, .score) > span {
+    display: table-cell;
+    width: 50%;
+    white-space: nowrap;
+  }
+}

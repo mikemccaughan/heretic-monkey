@@ -9,6 +9,7 @@ import {
 import { IClasslist } from '../IClasslist';
 import { DialogService } from '../dialog.service';
 import { NgClass } from '@angular/common';
+import { Utils } from 'src/app/common/utils';
 
 @Component({
     selector: 'app-dialog',
@@ -23,7 +24,7 @@ export class DialogComponent implements OnInit {
     public element: ElementRef
   ) {}
 
-  @Input()
+  @Input('dialog-id')
   public id: string;
   @Input()
   public title: string;
@@ -40,7 +41,8 @@ export class DialogComponent implements OnInit {
 
   open() {
     this.classes.show = true;
-    if (typeof this.autoFocusSelector === 'string' && this.autoFocusSelector.length > 0 && this.element.nativeElement.querySelector(this.autoFocusSelector) !== null) {
+    if (Utils.isGoodString(this.autoFocusSelector) &&
+        Utils.selectorFocusable(this.element.nativeElement, this.autoFocusSelector)) {
       this.element.nativeElement.querySelector(this.autoFocusSelector).focus();
     }
   }
