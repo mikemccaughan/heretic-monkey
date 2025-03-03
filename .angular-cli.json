@@ -33,6 +33,9 @@
               "./src/styles.css"
             ],
             "scripts": [],
+            "allowedCommonJsDependencies": [
+              "html2canvas"
+            ],
             "outputPath": "./dist",
             "outputMode": "static",
             "server": false,

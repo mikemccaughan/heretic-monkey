@@ -190,6 +190,7 @@ export class MynsweeprSignalsMineboardService {
         const boardToSave: SavedBoard = {
           id: boardId,
           img: imgPng,
+          dateSaved: new Date(),
           board: boardParts
         };
         MynsweeprSignalsMineboardService.savedBoards[boardId] = boardToSave;
@@ -201,6 +202,14 @@ export class MynsweeprSignalsMineboardService {
           'mynsweepr.service saveBoard end'
         );
         resolve(true);
+      }).catch((reason) => {
+        window.performance.mark('mynsweeper.service saveBoard end');
+        window.performance.measure(
+          'mynsweepr.service saveBoard',
+          'mynsweepr.service saveBoard start',
+          'mynsweepr.service saveBoard end'
+        );
+        reject(reason);
       });
     });
   }

@@ -4,7 +4,7 @@ import { MynsweeprSignalsBoardPersistenceComponent } from './board-persistence/b
 import { MynsweeprSignalsScoreboardComponent } from './scoreboard/scoreboard.component';
 import { MynsweeprSignalsScorePersistenceComponent } from './score-persistence/score-persistence.component';
 import { MynsweeprSignalsMineboardComponent } from './mineboard/mineboard.component';
-import { Board, Difficulty } from '../mynsweepr-model';
+import { Board, Difficulty, SavedBoard } from '../mynsweepr-model';
 
 @Component({
   selector: 'mynsweepr-signals-app',
@@ -28,7 +28,7 @@ export class MynsweeprSignalsComponent {
   saveBoard(): void {
 
   }
-  loadBoardToMineboard(event: Event): void {
+  loadBoardToMineboard(board: SavedBoard): void {
 
   }
   scoresChanged(): void {
