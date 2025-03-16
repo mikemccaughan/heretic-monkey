@@ -2,8 +2,8 @@ import { Difficulty } from "./Difficulty";
 import { formatTime } from "./Timer";
 
 export class Score {
-  private _difficulty: Difficulty;
-  private _score: string;
+  private _difficulty: Difficulty = Difficulty.Default;
+  private _score: string = '00:00:00';
 
   constructor(difficulty?: Difficulty, score?: string | number | Date) {
     if (!difficulty && !score) {
@@ -78,7 +78,7 @@ export class ScoreList extends Array<Score> {
   public static Default: ScoreList = new ScoreList();
   public static highScoreForDifficulty(scores: ScoreList, diff: Difficulty | string): Score {
     const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');
-    return ScoreList.forDifficulty(scores, diff).at(0);
+    return ScoreList.forDifficulty(scores, diff).at(0) ?? new Score(new Difficulty(diffValue));
   }
   public static forDifficulty(scores: ScoreList, diff: Difficulty | string, max: number = 5): ScoreList {
     const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');

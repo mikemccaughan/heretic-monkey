@@ -1,6 +1,9 @@
 export class Utils {
+  public static isBad(value: unknown): value is undefined | null {
+    return typeof value === 'undefined' || value === null;
+  }
   public static isGood(value: unknown): boolean {
-    return typeof value !== 'undefined' && value !== null;
+    return !Utils.isBad(value);
   }
   public static isGoodArray(value: unknown, minCount = 1, maxCount = Infinity): value is Array<unknown> {
     if (!Utils.isGood(value)) {
@@ -8,13 +11,21 @@ export class Utils {
     }
     return (Array.isArray(value) && value.length >= minCount && value.length <= maxCount);
   }
-  public static isGoodString(value: unknown): value is string {
+  public static isGoodNumber(value: unknown, min = -Infinity, max = Infinity): value is number {
+    return Utils.isGood(value) &&
+      typeof value === 'number' &&
+      !isNaN(value) &&
+      value >= min &&
+      value <= max;
+  }
+  public static isGoodString(value: unknown, minLength = 1, maxLength = Infinity): value is string {
     return Utils.isGood(value) &&
       typeof value === 'string' &&
-      value.length > 0 &&
-      ![...value].every(c => [9,10,13,32].includes(c.codePointAt(0)))
+      value.length >= minLength &&
+      value.length <= maxLength &&
+      ![...value].every(c => [9,10,13,32].includes(c?.codePointAt(0) ?? 0)); // not all whitespace
   }
-  public static isGoodJson(value: unknown, isArray = false, isObject = false): boolean {
+  public static isGoodJson(value: unknown, isArray = false, isObject = false): value is string {
     if (!Utils.isGoodString(value)) {
       return false;
     }
@@ -72,12 +83,12 @@ export class Utils {
       return true;
     }
     if ('valueOf' in (a as object) && 'valueOf' in (b as object)) {
-      if (a.valueOf() === b.valueOf()) {
+      if (a?.valueOf() === b?.valueOf()) {
         return true;
       }
     }
-    const aEntries = Object.entries(a);
-    const bEntries = Object.entries(b);
+    const aEntries = Object.entries(a ?? {});
+    const bEntries = Object.entries(b ?? {});
     if (aEntries.every(([ak, av]) => bEntries.some(([bk, bv]) => bk === ak && Utils.haveSameValue(av, bv)))) {
       return true;
     }

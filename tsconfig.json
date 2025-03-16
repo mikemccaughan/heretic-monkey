@@ -6,14 +6,16 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "declaration": false,
-    "module": "ES2022",
+    "module": "ESNext",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "target": "ES2023",
+    "strict": true,
+    "target": "ESNext",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2023", "dom"]
+    "lib": ["ESNext", "dom"]
   },
   "angularCompilerOptions": {
     "strictTemplates": true

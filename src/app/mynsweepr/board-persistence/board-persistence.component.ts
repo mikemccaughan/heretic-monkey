@@ -21,7 +21,7 @@ export class BoardPersistenceComponent implements OnInit {
     this.loadBoardRequested = new EventEmitter<SavedBoard>();
   }
 
-  public savedBoards: SavedBoard[];
+  public savedBoards: SavedBoard[] = [];
   @Output()
   public saveBoardRequested: EventEmitter<void>;
   @Output()

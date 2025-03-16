@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "build": "tsc --build",
+    "start": "node ../dist/server/index.js"
   },
   "private": true,
   "dependencies": {

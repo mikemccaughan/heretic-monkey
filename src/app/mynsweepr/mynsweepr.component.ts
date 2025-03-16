@@ -19,9 +19,9 @@ import { ScorePersistenceComponent } from "./score-persistence/score-persistence
     imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent, ScorePersistenceComponent]
 })
 export class MynsweeprComponent {
-  public board: Board;
-  public savedBoards: SavedBoard[];
-  public dialogs: { [key: string]: boolean };
+  public board: Board = new Board();
+  public savedBoards: SavedBoard[] = [];
+  public dialogs: { [key: string]: boolean } = {};;
 
   constructor(
     public mineboardSvc: MineboardService,

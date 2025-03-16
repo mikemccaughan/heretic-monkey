@@ -1,15 +1,8 @@
 import { Board } from './Board';
-import { Cell } from './Cell';
-import { Difficulty } from './Difficulty';
-import { Scoreboard } from './Scoreboard';
 
 export class SavedBoard {
-  public id: string;
-  public img: string;
-  public board: {
-    cells?: Cell[];
-    cellsByCoord?: { [key: string]: Cell };
-    difficulty?: Partial<Difficulty>;
-    scoreboard?: Partial<Scoreboard>;
-  };
+  public id: string = `saved-board-${window.crypto.randomUUID()}`;
+  public img: string = '';
+  public dateSaved: Date = new Date();
+  public board: Partial<Board> = {};
 }

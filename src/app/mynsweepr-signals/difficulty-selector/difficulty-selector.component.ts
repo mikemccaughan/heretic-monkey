@@ -22,7 +22,7 @@ export class MynsweeprSignalsDifficultySelectorComponent {
 
   @Input()
   public get difficulty(): Difficulty {
-    return this._difficultyParsed();
+    return this._difficultyParsed() ?? Difficulty.Default;
   }
   public set difficulty(value: Difficulty) {
     if (!Utils.haveSameValue(this.difficulty, value)) {

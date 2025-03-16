@@ -5,13 +5,12 @@
     "outDir": "../dist/server",
     "esModuleInterop": true,
     "declaration": false,
+    "forceConsistentCasingInFileNames": true,
     "module": "Node16",
     "moduleResolution": "node16",
-    "target": "ES2022",
+    "strict": true,
+    "target": "ESNext",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2023"]
-  },
-  "angularCompilerOptions": {
-    "strictTemplates": true
+    "lib": ["ESNext"]
   }
 }

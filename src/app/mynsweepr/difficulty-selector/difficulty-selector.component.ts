@@ -17,12 +17,11 @@ export class DifficultySelectorComponent {
       width: new UntypedFormControl(this.difficulty.width),
       height: new UntypedFormControl(this.difficulty.height)
     });
-    this.difficultyChanged = new EventEmitter<Difficulty>();
   }
   @Input()
   public difficulty: Difficulty;
   @Output()
-  public difficultyChanged: EventEmitter<Difficulty>;
+  public difficultyChanged: EventEmitter<Difficulty> = new EventEmitter<Difficulty>();
 
   public difficultySelectorForm: UntypedFormGroup;
 

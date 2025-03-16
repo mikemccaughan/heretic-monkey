@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Board, Cell, Difficulty, IBoardTraversalOptions, SavedBoard, wait } from '../mynsweepr-model';
+import { Board, Cell, Difficulty, IBoardTraversalOptions, SavedBoard, Scoreboard, wait } from '../mynsweepr-model';
 import { Utils } from '../common';
 import html2canvas from 'html2canvas';
 
@@ -7,7 +7,7 @@ import html2canvas from 'html2canvas';
   providedIn: 'root'
 })
 export class MynsweeprSignalsMineboardService {
-  public board: Board;
+  public board: Board = new Board();
   private preboard: number[][] = [];
 
   constructor() {
@@ -160,7 +160,7 @@ export class MynsweeprSignalsMineboardService {
   //#region board load/save
   private static _savedBoards: Record<string,SavedBoard> = {};
   public static get savedBoards(): Record<string,SavedBoard> {
-    if (!Utils.isGood(this._savedBoards)) {
+    if (Utils.isBad(this._savedBoards)) {
       const jsonBoards = window.localStorage.getItem('hm.mynsweepr.saves');
       if (!Utils.isGoodJson(jsonBoards, false, true)) {
         this._savedBoards = {};
@@ -182,10 +182,10 @@ export class MynsweeprSignalsMineboardService {
           cells: [...board.cells],
           cellsByCoords: { ...board.cellsByCoords },
           difficulty: { ...board.difficulty },
-          scoreboard: {
+          scoreboard: new Scoreboard({
             time: board.scoreboard.time,
             remaining: board.scoreboard.remaining
-          }
+          })
         };
         const boardToSave: SavedBoard = {
           id: boardId,
@@ -230,7 +230,7 @@ export class MynsweeprSignalsMineboardService {
   ): Board {
     window.performance.mark('mynsweepr.service loadBoard start');
     this.board = new Board(savedBoard.board);
-    this.board.statusChange.subscribe(statusChange);
+    this.board.statusChange?.subscribe(statusChange);
     window.performance.mark('mynsweepr.service loadBoard end');
     window.performance.measure(
       'mynsweepr.service loadBoard',
@@ -242,20 +242,25 @@ export class MynsweeprSignalsMineboardService {
   //#endregion board load/save
 
   //#region board traversal
-  private traversalOptions: Partial<IBoardTraversalOptions> = {
-    canMoveUp: (cell: Cell) =>
+  private traversalOptions: {
+    canMoveUp: (cell: Cell) => boolean;
+    canMoveDown: (cell: Cell) => boolean;
+    canMoveLeft: (cell: Cell) => boolean;
+    canMoveRight: (cell: Cell) => boolean;
+  } = {
+    canMoveUp: (cell: Cell) => Utils.isBad(cell) ? false :
       cell.y !== this.decrementY(cell.y) &&
       (this.isHiddenByCoord(cell.x, this.decrementY(cell.y)) ||
         cell.x === this.incrementX(cell.x)),
-    canMoveDown: (cell: Cell) =>
+    canMoveDown: (cell: Cell) => Utils.isBad(cell) ? false :
       cell.y !== this.incrementY(cell.y) &&
       (this.isHiddenByCoord(cell.x, this.incrementY(cell.y)) ||
         cell.x === this.decrementY(cell.x)),
-    canMoveLeft: (cell: Cell) =>
+    canMoveLeft: (cell: Cell) => Utils.isBad(cell) ? false :
       cell.x !== this.decrementX(cell.x) &&
       (this.isHiddenByCoord(this.decrementX(cell.x), cell.y) ||
         cell.y === this.incrementY(cell.y)),
-    canMoveRight: (cell: Cell) =>
+    canMoveRight: (cell: Cell) => Utils.isBad(cell) ? false :
       cell.x !== this.incrementX(cell.x) &&
       (this.isHiddenByCoord(this.incrementX(cell.x), cell.y) ||
         cell.y === this.decrementY(cell.y))
@@ -268,17 +273,22 @@ export class MynsweeprSignalsMineboardService {
     return y === 0 ? 0 : y - 1;
   }
   private incrementX(x: number): number {
-    return x === this.board.difficulty.width - 1
-      ? this.board.difficulty.width - 1
+    const value = this.board?.difficulty?.width ?? 0;
+    return x === value - 1
+      ? value - 1
       : x + 1;
   }
   private incrementY(y: number): number {
-    return y === this.board.difficulty.height - 1
-      ? this.board.difficulty.height - 1
+    const value = this.board?.difficulty?.height ?? 0;
+    return y === value - 1
+      ? value - 1
       : y + 1;
   }
   private getCellByCoord(x: number, y: number): Cell {
-    return this.board.cellsByCoords[Board.getCoord(x, y)];
+    if (Utils.isBad(this.board)) {
+      throw new Error('Board not initialized');
+    }
+    return this.board.cellsByCoords[Board.getCoord(x, y)] ?? new Cell();
   }
   private isHiddenByCoord(x: number, y: number): boolean {
     const cell = this.getCellByCoord(x, y);

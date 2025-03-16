@@ -9,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   @Input()
-  public title: string;
+  public title: string = 'Heretic-Monkey.com';
 
   constructor() { }
 

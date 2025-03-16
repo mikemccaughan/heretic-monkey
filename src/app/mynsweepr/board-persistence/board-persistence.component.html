@@ -10,7 +10,7 @@
   <ul>
     <li *ngFor="let board of savedBoards" class="saved-board">
       <button type="button" (click)="loadBoard(board)">
-        <img [src]="board.img" />
+        <img [src]="board.img" alt="Saved Board from {new Intl.DateTimeFormat([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(board.dateSaved)}" />
       </button>
     </li>
   </ul>

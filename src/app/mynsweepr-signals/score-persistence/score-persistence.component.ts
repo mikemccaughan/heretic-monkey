@@ -10,7 +10,7 @@ import { Difficulty, ScoreList } from 'src/app/mynsweepr-model';
   standalone: true
 })
 export class MynsweeprSignalsScorePersistenceComponent {
-  private _scores: ScoreList;
+  private _scores: ScoreList = new ScoreList();
 
   public scoreJson = signal(JSON.stringify(ScoreList.Default));
   public scoreList = computed<ScoreList>(() => new ScoreList(...JSON.parse(this.scoreJson())));
@@ -44,6 +44,7 @@ export class MynsweeprSignalsScorePersistenceComponent {
       return new ScoreList(...[hs]);
     } else {
       console.log('No scores...');
+      return new ScoreList();
     }
   }
 
@@ -52,6 +53,7 @@ export class MynsweeprSignalsScorePersistenceComponent {
       return ScoreList.forDifficulty(this.scores, this.difficulty, 5);
     } else {
       console.log('No scores...');
+      return new ScoreList();
     }
   }
 }

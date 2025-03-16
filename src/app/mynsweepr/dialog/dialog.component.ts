@@ -25,13 +25,13 @@ export class DialogComponent implements OnInit {
   ) {}
 
   @Input('dialog-id')
-  public id: string;
+  public id: string = `dialog-${window.crypto.randomUUID()}`;
   @Input()
-  public title: string;
+  public title: string = `Dialog`;
   @Input()
-  public classes: IClasslist;
+  public classes: IClasslist = {};
   @Input()
-  public autoFocusSelector: string;
+  public autoFocusSelector: string = '[autofocus]';
   @Output()
   public closed: EventEmitter<string> = new EventEmitter<string>();
 

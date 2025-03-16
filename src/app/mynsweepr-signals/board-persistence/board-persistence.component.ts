@@ -18,11 +18,11 @@ export class MynsweeprSignalsBoardPersistenceComponent {
     this.loadBoardRequested = new EventEmitter<SavedBoard>();
   }
 
-  public savedBoards: SavedBoard[];
+  public savedBoards: SavedBoard[] = [];
   @Output()
-  public saveBoardRequested: EventEmitter<void>;
+  public saveBoardRequested: EventEmitter<void> = new EventEmitter<void>();
   @Output()
-  public loadBoardRequested: EventEmitter<SavedBoard>;
+  public loadBoardRequested: EventEmitter<SavedBoard> = new EventEmitter<SavedBoard>();
 
   saveBoard() {
     this.saveBoardRequested.emit();

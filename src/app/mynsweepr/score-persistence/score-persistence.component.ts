@@ -9,7 +9,7 @@ import { ScoreList, Difficulty } from '../';
   standalone: true
 })
 export class ScorePersistenceComponent implements OnInit {
-  private _scores: ScoreList;
+  private _scores: ScoreList = new ScoreList();
   @Input()
   public set scores(value: ScoreList) {
     value = value?.filter((score) => !!score);
@@ -20,11 +20,14 @@ export class ScorePersistenceComponent implements OnInit {
     }
   }
   public get scores(): ScoreList {
+    if (!this._scores) {
+      this._scores = new ScoreList();
+    }
     return this._scores;
   }
 
   @Input()
-  public difficulty: Difficulty;
+  public difficulty: Difficulty = Difficulty.Easy;
 
   @Output()
   public scoresChanged: EventEmitter<void> = new EventEmitter<void>();
@@ -41,6 +44,7 @@ export class ScorePersistenceComponent implements OnInit {
       return new ScoreList(...[hs]);
     } else {
       console.log('No scores...');
+      return new ScoreList();
     }
   }
 
@@ -49,6 +53,7 @@ export class ScorePersistenceComponent implements OnInit {
       return ScoreList.forDifficulty(this.scores.filter((_, idx) => idx < 5), this.difficulty);
     } else {
       console.log('No scores...');
+      return new ScoreList();
     }
   }
 }

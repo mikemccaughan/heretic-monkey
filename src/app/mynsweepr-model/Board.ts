@@ -1,16 +1,17 @@
+import { Utils } from '../common';
 import { Difficulty, Scoreboard, Cell, IClasslist, Score, ScoreList } from './';
 import { EventEmitter } from '@angular/core';
 
 export class Board {
-  public difficulty: Difficulty;
-  public scoreboard: Scoreboard;
-  public scores: ScoreList;
-  public cells: Cell[];
-  public cellsByCoords?: { [key: string]: Cell };
-  public statusChange?: EventEmitter<string>;
-  public scoresChange?: EventEmitter<void>;
-  private _status: string = null;
-  private _hadChange: boolean;
+  public difficulty: Difficulty = Difficulty.Easy;
+  public scoreboard: Scoreboard = new Scoreboard();
+  public scores: ScoreList = new ScoreList();
+  public cells: Cell[] = [];
+  public cellsByCoords: { [key: string]: Cell } = {};
+  public statusChange: EventEmitter<string> = new EventEmitter<string>();
+  public scoresChange: EventEmitter<void> = new EventEmitter<void>();
+  private _status: string = 'unknown';
+  private _hadChange: boolean = false;
   public get hadChange(): boolean {
     return this._hadChange;
   }
@@ -37,7 +38,7 @@ export class Board {
       );
     } else {
       window.performance.mark('Board constructor start (board)');
-      this.cells = board.cells.map(cell => new Cell(cell));
+      this.cells = (board.cells ?? []).map(cell => new Cell(cell));
       this.populateBoardByCoord();
       this.difficulty = new Difficulty(board.difficulty);
       this.scoreboard = new Scoreboard(board.scoreboard);
@@ -49,10 +50,8 @@ export class Board {
         'Board constructor end (board)'
       );
     }
-    this.scoresChange = new EventEmitter<void>();
     this.scores = this._loadScores();
     this.scoresChange.emit();
-    this.statusChange = new EventEmitter<string>();
     window.performance.mark('Board constructor end');
     window.performance.measure(
       'Board constructor',
@@ -70,10 +69,7 @@ export class Board {
     const props = this.cells.map(
       cel => [Board.getCoord(cel.x, cel.y), cel] as [string, Cell]
     );
-    this.cellsByCoords = {};
-    for (const prop of props) {
-      this.cellsByCoords[prop[0]] = prop[1];
-    }
+    this.cellsByCoords = Object.fromEntries(props);
     window.performance.mark('Board populateBoardByCoord end');
     window.performance.measure(
       'Board populateBoardByCoord',
@@ -91,7 +87,7 @@ export class Board {
       status = 'won';
     }
     if (status !== this._status) {
-      this.statusChange.emit(status);
+      this.statusChange?.emit(status);
       this.scoreboard.stopTimer();
       this._status = status;
       if (status === 'won') {
@@ -156,9 +152,12 @@ export class Board {
 
   private _loadScores(): ScoreList {
     const jsonScores = window.localStorage.getItem('hm.mynsweepr.scores');
-    if ((jsonScores?.length ?? 0) > 0) {
+    if (Utils.isGoodString(jsonScores)) {
       let rawScores = JSON.parse(jsonScores);
-      rawScores = rawScores.flat(Infinity).filter((score: Score) => !!score).map((score: Score) => new Score(score['_difficulty'], score['_score']));
+      rawScores = rawScores
+        .flat(Infinity)
+        .filter((score: Score) => !!score)
+        .map((score: Score) => new Score(score['_difficulty'], score['_score']));
       if (rawScores.length) {
         return new ScoreList(...rawScores);
       } else {

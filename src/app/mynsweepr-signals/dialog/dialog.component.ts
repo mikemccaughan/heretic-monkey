@@ -25,13 +25,13 @@ export class MynsweeprSignalsDialogComponent implements OnInit {
   ) {}
 
   @Input('dialog-id')
-  public id: string;
+  public id: string = `dialog-${window.crypto.randomUUID()}`;
   @Input()
-  public title: string;
+  public title: string = 'Dialog';
   @Input()
-  public classes: IClasslist;
+  public classes: IClasslist = {};
   @Input()
-  public autoFocusSelector: string;
+  public autoFocusSelector: string = '[autofocus]';
   @Output()
   public closed: EventEmitter<string> = new EventEmitter<string>();
 
@@ -42,9 +42,11 @@ export class MynsweeprSignalsDialogComponent implements OnInit {
   open(): void {
     this.element.nativeElement.showModal();
     this.classes.show = true;
+    const autofocusElement = this.element.nativeElement.querySelector<HTMLElement>(this.autoFocusSelector);
     if (Utils.isGoodString(this.autoFocusSelector) &&
-        Utils.selectorFocusable(this.element.nativeElement, this.autoFocusSelector)) {
-      this.element.nativeElement.querySelector<HTMLElement>(this.autoFocusSelector).focus();
+        Utils.selectorFocusable(this.element.nativeElement, this.autoFocusSelector) &&
+        !Utils.isBad(autofocusElement)) {
+          autofocusElement.focus();
     }
   }
 

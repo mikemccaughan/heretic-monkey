@@ -1,14 +1,14 @@
 import { IClasslist } from './IClasslist';
 
 export class Cell {
-  public isHidden?: boolean;
-  public hasFlag?: boolean;
-  public index?: number;
-  public value?: number;
-  public x?: number;
-  public y?: number;
+  public isHidden: boolean = true;
+  public hasFlag: boolean = false;
+  public index: number = -1;
+  public value: number = -1;
+  public x: number = -1;
+  public y: number = -1;
   public get nearby(): number {
-    return this.value >= 0 ? this.value : null;
+    return this.value >= 0 ? this.value : 0;
   }
   public get hasMine(): boolean {
     return this.value < 0;
@@ -31,10 +31,10 @@ export class Cell {
     if (cell) {
       this.isHidden = typeof cell.isHidden === 'boolean' ? cell.isHidden : true;
       this.hasFlag = typeof cell.hasFlag === 'boolean' ? cell.hasFlag : false;
-      this.index = cell.index;
-      this.value = cell.value;
-      this.x = cell.x;
-      this.y = cell.y;
+      this.index = cell.index ?? -1;
+      this.value = cell.value ?? -1;
+      this.x = cell.x ?? -1;
+      this.y = cell.y ?? -1;
     }
   }
   get classes(): IClasslist {
