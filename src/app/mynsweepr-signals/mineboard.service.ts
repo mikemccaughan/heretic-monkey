@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Board, Cell, Difficulty, IBoardTraversalOptions, SavedBoard, Scoreboard, wait } from '../mynsweepr-model';
+import { SignalBoard, SignalCell, SignalDifficulty, ISignalBoardTraversalOptions, SavedSignalBoard, SignalScoreboard, wait } from './models';
 import { Utils } from '../common';
 import html2canvas from 'html2canvas';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
+  useClass: MynsweeprSignalsMineboardService
 })
 export class MynsweeprSignalsMineboardService {
-  public board: Board = new Board();
+  public board: SignalBoard = new SignalBoard();
   private preboard: number[][] = [];
 
   constructor() {
-    this.board = new Board();
+    this.board = new SignalBoard();
   }
 
   //#region board building
@@ -22,11 +23,11 @@ export class MynsweeprSignalsMineboardService {
     index: number,
     hidden?: boolean,
     flag?: boolean
-  ): Cell {
+  ): SignalCell {
     window.performance.mark('mynsweepr.service createCell start');
     hidden = typeof hidden === 'boolean' ? hidden : true;
     flag = typeof flag === 'boolean' ? flag : false;
-    const cell = new Cell({
+    const cell = new SignalCell({
       value,
       x,
       y,
@@ -137,12 +138,12 @@ export class MynsweeprSignalsMineboardService {
   }
   buildBoard(
     statusChange: (status: string) => void,
-    difficulty?: Difficulty
-  ): Board {
+    difficulty?: SignalDifficulty
+  ): SignalBoard {
     window.performance.mark('mynsweepr.service buildBoard start');
-    this.board = new Board();
+    this.board = new SignalBoard();
     this.board.statusChange.subscribe(statusChange);
-    this.board.difficulty = new Difficulty(difficulty);
+    this.board.difficulty = new SignalDifficulty(difficulty);
     this.initPreboard();
     this.populatePreboard();
     this.buildCells();
@@ -158,42 +159,36 @@ export class MynsweeprSignalsMineboardService {
   //#endregion board building
 
   //#region board load/save
-  private static _savedBoards: Record<string,SavedBoard> = {};
-  public static get savedBoards(): Record<string,SavedBoard> {
+  private static _savedBoards: Record<string,SavedSignalBoard> = {};
+  public static get savedBoards(): Record<string,SavedSignalBoard> {
     if (Utils.isBad(this._savedBoards)) {
       const jsonBoards = window.localStorage.getItem('hm.mynsweepr.saves');
       if (!Utils.isGoodJson(jsonBoards, false, true)) {
         this._savedBoards = {};
       } else {
-        this._savedBoards = JSON.parse(jsonBoards) as Record<string,SavedBoard>;
+        this._savedBoards = JSON.parse(jsonBoards) as Record<string,SavedSignalBoard>;
       }
     }
 
     return this._savedBoards;
   }
-  saveBoard(board: Board): Promise<boolean> {
+  saveBoard(board: SignalBoard): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       window.performance.mark('mynsweepr.service saveBoard start');
-      const boardId = `savedBoard${Date.now()}`;
       html2canvas(document.body).then(canvas => {
-        const imgPng = canvas.toDataURL();
         // Get only serializable data
-        const boardParts: Partial<Board> = {
+        const boardParts: Partial<SignalBoard> = {
           cells: [...board.cells],
           cellsByCoords: { ...board.cellsByCoords },
-          difficulty: { ...board.difficulty },
-          scoreboard: new Scoreboard({
+          difficulty: new SignalDifficulty(board.difficulty),
+          scoreboard: new SignalScoreboard({
             time: board.scoreboard.time,
             remaining: board.scoreboard.remaining
           })
         };
-        const boardToSave: SavedBoard = {
-          id: boardId,
-          img: imgPng,
-          dateSaved: new Date(),
-          board: boardParts
-        };
-        MynsweeprSignalsMineboardService.savedBoards[boardId] = boardToSave;
+        const boardToSave: SavedSignalBoard = new SavedSignalBoard(boardParts);
+        boardToSave.img = canvas.toDataURL();
+        MynsweeprSignalsMineboardService.savedBoards[boardToSave.id] = boardToSave;
         window.localStorage.setItem('hm.mynsweepr.saves', JSON.stringify(MynsweeprSignalsMineboardService.savedBoards));
         window.performance.mark('mynsweepr.service saveBoard end');
         window.performance.measure(
@@ -213,7 +208,7 @@ export class MynsweeprSignalsMineboardService {
       });
     });
   }
-  getSavedBoards(): Record<string,SavedBoard> {
+  getSavedBoards(): Record<string,SavedSignalBoard> {
     window.performance.mark('mynsweepr.service getSavedBoards start');
     const savedBoards = MynsweeprSignalsMineboardService.savedBoards;
     window.performance.mark('mynsweepr.service getSavedBoards end');
@@ -226,10 +221,10 @@ export class MynsweeprSignalsMineboardService {
   }
   loadBoard(
     statusChange: (status: string) => void,
-    savedBoard: SavedBoard
-  ): Board {
+    savedBoard: SavedSignalBoard
+  ): SignalBoard {
     window.performance.mark('mynsweepr.service loadBoard start');
-    this.board = new Board(savedBoard.board);
+    this.board = new SignalBoard(savedBoard.board);
     this.board.statusChange?.subscribe(statusChange);
     window.performance.mark('mynsweepr.service loadBoard end');
     window.performance.measure(
@@ -243,24 +238,24 @@ export class MynsweeprSignalsMineboardService {
 
   //#region board traversal
   private traversalOptions: {
-    canMoveUp: (cell: Cell) => boolean;
-    canMoveDown: (cell: Cell) => boolean;
-    canMoveLeft: (cell: Cell) => boolean;
-    canMoveRight: (cell: Cell) => boolean;
+    canMoveUp: (cell: SignalCell) => boolean;
+    canMoveDown: (cell: SignalCell) => boolean;
+    canMoveLeft: (cell: SignalCell) => boolean;
+    canMoveRight: (cell: SignalCell) => boolean;
   } = {
-    canMoveUp: (cell: Cell) => Utils.isBad(cell) ? false :
+    canMoveUp: (cell: SignalCell) => Utils.isBad(cell) ? false :
       cell.y !== this.decrementY(cell.y) &&
       (this.isHiddenByCoord(cell.x, this.decrementY(cell.y)) ||
         cell.x === this.incrementX(cell.x)),
-    canMoveDown: (cell: Cell) => Utils.isBad(cell) ? false :
+    canMoveDown: (cell: SignalCell) => Utils.isBad(cell) ? false :
       cell.y !== this.incrementY(cell.y) &&
       (this.isHiddenByCoord(cell.x, this.incrementY(cell.y)) ||
         cell.x === this.decrementY(cell.x)),
-    canMoveLeft: (cell: Cell) => Utils.isBad(cell) ? false :
+    canMoveLeft: (cell: SignalCell) => Utils.isBad(cell) ? false :
       cell.x !== this.decrementX(cell.x) &&
       (this.isHiddenByCoord(this.decrementX(cell.x), cell.y) ||
         cell.y === this.incrementY(cell.y)),
-    canMoveRight: (cell: Cell) => Utils.isBad(cell) ? false :
+    canMoveRight: (cell: SignalCell) => Utils.isBad(cell) ? false :
       cell.x !== this.incrementX(cell.x) &&
       (this.isHiddenByCoord(this.incrementX(cell.x), cell.y) ||
         cell.y === this.decrementY(cell.y))
@@ -284,11 +279,11 @@ export class MynsweeprSignalsMineboardService {
       ? value - 1
       : y + 1;
   }
-  private getCellByCoord(x: number, y: number): Cell {
+  private getCellByCoord(x: number, y: number): SignalCell {
     if (Utils.isBad(this.board)) {
       throw new Error('Board not initialized');
     }
-    return this.board.cellsByCoords[Board.getCoord(x, y)] ?? new Cell();
+    return this.board.cellsByCoords[SignalBoard.getCoord(x, y)] ?? new SignalCell();
   }
   private isHiddenByCoord(x: number, y: number): boolean {
     const cell = this.getCellByCoord(x, y);
@@ -297,7 +292,7 @@ export class MynsweeprSignalsMineboardService {
     }
     return cell.isHidden;
   }
-  private isContiguousWithOriginal(cell: Cell, original: Cell): boolean {
+  private isContiguousWithOriginal(cell: SignalCell, original: SignalCell): boolean {
     const result =
       cell.index === original.index ||
       (cell.x === original.x && cell.y === original.y + 1) ||
@@ -314,8 +309,8 @@ export class MynsweeprSignalsMineboardService {
 
   //#region special case board traversal
   private cellIsInHistory(
-    cell: Cell,
-    options: IBoardTraversalOptions
+    cell: SignalCell,
+    options: ISignalBoardTraversalOptions
   ): boolean {
     return (
       (options.cellHistory || []).findIndex(ce => ce.index === cell.index) ===
@@ -323,10 +318,10 @@ export class MynsweeprSignalsMineboardService {
     );
   }
 
-  private getCellsForRevealAround(options: IBoardTraversalOptions): Set<Cell> {
+  private getCellsForRevealAround(options: ISignalBoardTraversalOptions): Set<SignalCell> {
     window.performance.mark('mynsweepr.service getCellsForRevealAround start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
-    options.result = new Set<Cell>([
+    options.result = new Set<SignalCell>([
       ...options.result,
       ...this.board.cells.filter(options.addToResult)
     ]);
@@ -340,19 +335,19 @@ export class MynsweeprSignalsMineboardService {
     return options.result;
   }
 
-  private getCellsForEpicFail(options: IBoardTraversalOptions): Set<Cell> {
-    return new Set<Cell>(this.board.cells.filter(options.addToResult));
+  private getCellsForEpicFail(options: ISignalBoardTraversalOptions): Set<SignalCell> {
+    return new Set<SignalCell>(this.board.cells.filter(options.addToResult));
   }
-  private epicFail(cell: Cell): void {
+  private epicFail(cell: SignalCell): void {
     if (!cell) {
       throw new Error(`No cell`);
     }
 
     window.performance.mark('mynsweepr.service epicFail start');
-    let cellsToUpdate = new Set<Cell>();
-    const options: IBoardTraversalOptions = {
+    let cellsToUpdate = new Set<SignalCell>();
+    const options: ISignalBoardTraversalOptions = {
       ...this.traversalOptions,
-      addToResult: (cel: Cell) => !!cel && cel.isHidden,
+      addToResult: (cel: SignalCell) => !!cel && cel.isHidden,
       cell,
       result: cellsToUpdate,
       cellHistory: [cell]
@@ -371,7 +366,7 @@ export class MynsweeprSignalsMineboardService {
     );
   }
 
-  private addForEpicWin(cell: Cell, originalCell: Cell): boolean {
+  private addForEpicWin(cell: SignalCell, originalCell: SignalCell): boolean {
     return (
       cell.isHidden &&
       !cell.hasMine &&
@@ -379,11 +374,11 @@ export class MynsweeprSignalsMineboardService {
       this.isContiguousWithOriginal(cell, originalCell)
     );
   }
-  private getCellsForEpicWin(options: IBoardTraversalOptions): Set<Cell> {
+  private getCellsForEpicWin(options: ISignalBoardTraversalOptions): Set<SignalCell> {
     window.performance.mark('mynsweepr.service getCellsForEpicWin start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
 
-    options.result = new Set<Cell>([
+    options.result = new Set<SignalCell>([
       ...options.result,
       ...this.board.cells.filter(options.addToResult)
     ]);
@@ -396,7 +391,7 @@ export class MynsweeprSignalsMineboardService {
       options.cell = cell;
       options.addToResult = cel =>
         cel && cel.isHidden && !cel.hasMine && this.addForEpicWin(cel, cell);
-      options.result = new Set<Cell>([
+      options.result = new Set<SignalCell>([
         ...options.result,
         ...this.getCellsForEpicWin(options)
       ]);
@@ -409,16 +404,16 @@ export class MynsweeprSignalsMineboardService {
     );
     return options.result;
   }
-  private epicWin(cell: Cell): Cell {
+  private epicWin(cell: SignalCell): SignalCell {
     if (!cell) {
       throw new Error(`No cell`);
     }
 
     window.performance.mark('mynsweepr.service epicWin start');
-    let cellsToUpdate = new Set<Cell>();
-    const options: IBoardTraversalOptions = {
+    let cellsToUpdate = new Set<SignalCell>();
+    const options: ISignalBoardTraversalOptions = {
       ...this.traversalOptions,
-      addToResult: (cel: Cell) =>
+      addToResult: (cel: SignalCell) =>
         cel && cel.isHidden && !cel.hasMine && this.addForEpicWin(cel, cell),
       cell,
       result: cellsToUpdate,
@@ -441,7 +436,7 @@ export class MynsweeprSignalsMineboardService {
   //#endregion special case board traversal
 
   //#region cell interaction
-  cellReveal(cell: Cell): void {
+  cellReveal(cell: SignalCell): void {
     if (!cell) {
       throw new Error(`No cell`);
     }
@@ -467,7 +462,7 @@ export class MynsweeprSignalsMineboardService {
       'mynsweepr.service cellReveal end'
     );
   }
-  cellFlag(cell: Cell): void {
+  cellFlag(cell: SignalCell): void {
     if (!cell) {
       throw new Error(`No cell`);
     }
@@ -483,16 +478,16 @@ export class MynsweeprSignalsMineboardService {
       'mynsweepr.service cellFlag end'
     );
   }
-  cellRevealAround(cell: Cell): void {
+  cellRevealAround(cell: SignalCell): void {
     if (!cell) {
       throw new Error('cell not provided');
     }
 
     window.performance.mark('mynsweepr.service cellRevealAround start');
-    let cellsToUpdate = new Set<Cell>();
-    const options: IBoardTraversalOptions = {
+    let cellsToUpdate = new Set<SignalCell>();
+    const options: ISignalBoardTraversalOptions = {
       ...this.traversalOptions,
-      addToResult: (cel: Cell) =>
+      addToResult: (cel: SignalCell) =>
         cel && this.isContiguousWithOriginal(cel, cell),
       result: cellsToUpdate,
       cell

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build && cd server && npm run build",
+    "start": "ng serve -c dev",
+    "build": "ng build -c dev && cd server && npm run build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

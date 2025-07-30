@@ -1,6 +1,6 @@
-import { Component, computed, Input, signal } from '@angular/core';
+import { Component, computed, Input, signal, Signal, WritableSignal } from '@angular/core';
 import { Utils } from 'src/app/common';
-import { Difficulty, ScoreList } from 'src/app/mynsweepr-model';
+import { SignalDifficulty, SignalScoreList } from '../models';
 
 @Component({
   selector: 'mynsweepr-signals-score-persistence',
@@ -10,50 +10,50 @@ import { Difficulty, ScoreList } from 'src/app/mynsweepr-model';
   standalone: true
 })
 export class MynsweeprSignalsScorePersistenceComponent {
-  private _scores: ScoreList = new ScoreList();
+  private _scores: SignalScoreList = new SignalScoreList();
 
-  public scoreJson = signal(JSON.stringify(ScoreList.Default));
-  public scoreList = computed<ScoreList>(() => new ScoreList(...JSON.parse(this.scoreJson())));
+  public scoreJson: WritableSignal<string> = signal(JSON.stringify(SignalScoreList.Default));
+  public scoreList: Signal<SignalScoreList> = computed<SignalScoreList>(() => new SignalScoreList(...JSON.parse(this.scoreJson())));
 
   @Input()
-  public get scores(): ScoreList {
+  public get scores(): SignalScoreList {
     return this.scoreList();
   }
-  public set scores(value: ScoreList) {
+  public set scores(value: SignalScoreList) {
     if (!Utils.haveSameValues(this.scoreList(), value)) {
       this.scoreJson.set(JSON.stringify(value));
     }
   }
 
-  public difficultyJson = signal(JSON.stringify(Difficulty.Default));
-  public difficultyParsed = computed<Difficulty>(() => new Difficulty(JSON.parse(this.difficultyJson())));
+  public difficultyJson = signal(JSON.stringify(SignalDifficulty.Default));
+  public difficultyParsed = computed<SignalDifficulty>(() => new SignalDifficulty(JSON.parse(this.difficultyJson())));
 
   @Input()
-  public get difficulty(): Difficulty {
+  public get difficulty(): SignalDifficulty {
     return this.difficultyParsed();
   }
-  public set difficulty(value: Difficulty) {
+  public set difficulty(value: SignalDifficulty) {
     if (!Utils.haveSameValue(this.difficultyParsed(), value)) {
       this.difficultyJson.set(JSON.stringify(value));
     }
   }
 
-  public get highScore(): ScoreList {
+  public get highScore(): SignalScoreList {
     if (this.scores?.length && this.difficulty?.value) {
-      const hs = ScoreList.highScoreForDifficulty(this.scores, this.difficulty);
-      return new ScoreList(...[hs]);
+      const hs = SignalScoreList.highScoreForDifficulty(this.scores, this.difficulty);
+      return new SignalScoreList(...[hs]);
     } else {
       console.log('No scores...');
-      return new ScoreList();
+      return new SignalScoreList();
     }
   }
 
-  public get displayScores(): ScoreList {
+  public get displayScores(): SignalScoreList {
     if (this.scores?.length && this.difficulty?.value) {
-      return ScoreList.forDifficulty(this.scores, this.difficulty, 5);
+      return SignalScoreList.forDifficulty(this.scores, this.difficulty, 5);
     } else {
       console.log('No scores...');
-      return new ScoreList();
+      return new SignalScoreList();
     }
   }
 }

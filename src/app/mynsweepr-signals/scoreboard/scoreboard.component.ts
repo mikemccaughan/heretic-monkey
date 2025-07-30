@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Scoreboard } from 'src/app/mynsweepr-model';
+import { SignalScoreboard } from '../models';
 
 @Component({
   selector: 'mynsweepr-signals-scoreboard',
@@ -10,5 +10,5 @@ import { Scoreboard } from 'src/app/mynsweepr-model';
 })
 export class MynsweeprSignalsScoreboardComponent {
   @Input()
-  public scoreboard: Scoreboard = new Scoreboard();
+  public scoreboard: SignalScoreboard = new SignalScoreboard();
 }

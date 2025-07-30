@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MynsweeprSignalsDialogComponent, MynsweeprSignalsDialogService, MynsweeprSignalsMineboardService } from '../components';
-import { SavedBoard } from 'src/app/mynsweepr-model';
+import { SavedSignalBoard } from '../models';
 
 @Component({
   selector: 'mynsweepr-signals-board-persistence',
@@ -15,14 +15,14 @@ export class MynsweeprSignalsBoardPersistenceComponent {
     public dialogSvc: MynsweeprSignalsDialogService
   ) {
     this.saveBoardRequested = new EventEmitter<void>();
-    this.loadBoardRequested = new EventEmitter<SavedBoard>();
+    this.loadBoardRequested = new EventEmitter<SavedSignalBoard>();
   }
 
-  public savedBoards: SavedBoard[] = [];
+  public savedBoards: SavedSignalBoard[] = [];
   @Output()
   public saveBoardRequested: EventEmitter<void> = new EventEmitter<void>();
   @Output()
-  public loadBoardRequested: EventEmitter<SavedBoard> = new EventEmitter<SavedBoard>();
+  public loadBoardRequested: EventEmitter<SavedSignalBoard> = new EventEmitter<SavedSignalBoard>();
 
   saveBoard() {
     this.saveBoardRequested.emit();
@@ -33,7 +33,7 @@ export class MynsweeprSignalsBoardPersistenceComponent {
     this.dialogSvc.open('load');
   }
 
-  loadBoard(savedBoard: SavedBoard) {
+  loadBoard(savedBoard: SavedSignalBoard) {
     this.loadBoardRequested.emit(savedBoard);
     this.dialogSvc.close('load');
   }

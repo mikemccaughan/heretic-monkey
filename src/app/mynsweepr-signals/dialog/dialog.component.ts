@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { MynsweeprSignalsDialogService } from '../components';
-import { IClasslist } from 'src/app/mynsweepr-model';
+import { IClasslist } from '../models';
 import { Utils } from 'src/app/common';
 
 @Component({

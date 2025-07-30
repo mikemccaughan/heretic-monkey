@@ -11,7 +11,7 @@
     @for (board of savedBoards; track board.id) {
       <li class="saved-board">
         <button type="button" (click)="loadBoard(board)">
-          <img [src]="board.img" alt="Saved Board from {board.}"/>
+          <img [src]="board.img" alt="Saved Board from {board.dateSaved}"/>
         </button>
       </li>
     } @empty {

@@ -1,7 +1,7 @@
 import { Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Utils } from 'src/app/common';
-import { Difficulty } from 'src/app/mynsweepr-model';
+import { SignalDifficulty } from '../models';
 
 @Component({
   selector: 'mynsweepr-signals-difficulty-selector',
@@ -11,33 +11,33 @@ import { Difficulty } from 'src/app/mynsweepr-model';
   standalone: true
 })
 export class MynsweeprSignalsDifficultySelectorComponent {
-  private _difficultyJson = signal(JSON.stringify(Difficulty.Default));
+  private _difficultyJson = signal(JSON.stringify(SignalDifficulty.Default));
   private _difficultyParsed = computed(() => {
     const json = this._difficultyJson();
     if (Utils.isGoodJson(json, false, true)) {
       const parsed = JSON.parse(json);
-      return new Difficulty(parsed);
+      return new SignalDifficulty(parsed);
     }
   });
 
   @Input()
-  public get difficulty(): Difficulty {
-    return this._difficultyParsed() ?? Difficulty.Default;
+  public get difficulty(): SignalDifficulty {
+    return this._difficultyParsed() ?? SignalDifficulty.Default;
   }
-  public set difficulty(value: Difficulty) {
+  public set difficulty(value: SignalDifficulty) {
     if (!Utils.haveSameValue(this.difficulty, value)) {
       this._difficultyJson.set(JSON.stringify(value));
       this.difficultyChanged.emit(value);
     }
   }
   @Output()
-  public difficultyChanged: EventEmitter<Difficulty>;
+  public difficultyChanged: EventEmitter<SignalDifficulty>;
 
   public difficultySelectorForm: UntypedFormGroup;
 
   constructor() {
-    this.difficultyChanged = new EventEmitter<Difficulty>();
-    this.difficulty = new Difficulty();
+    this.difficultyChanged = new EventEmitter<SignalDifficulty>();
+    this.difficulty = new SignalDifficulty();
     this.difficultySelectorForm = new UntypedFormGroup({
       value: new UntypedFormControl(this.difficulty.value),
       width: new UntypedFormControl(this.difficulty.width),
@@ -46,7 +46,7 @@ export class MynsweeprSignalsDifficultySelectorComponent {
   }
 
   public difficultySelected(): void {
-    this.difficulty = new Difficulty(this.difficultySelectorForm.value);
+    this.difficulty = new SignalDifficulty(this.difficultySelectorForm.value);
     this.difficultyChanged.emit(this.difficulty);
   }
 }

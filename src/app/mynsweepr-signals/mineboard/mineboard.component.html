@@ -1,1 +1,56 @@
-<p>mineboard works!</p>
+<div [ngClass]="board.classes" [ngStyle]="board.styles">
+  <mynsweepr-signals-dialog [dialog-id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
+    <p class="dialog-content" role="img" aria-label="#winning">🎉</p>
+    <footer class="dialog-buttons">
+      <button
+        type="button"
+        class="confirm"
+        aria-label="indicates winning, closes dialog"
+        (click)="closeDialog('won')"
+      >
+        Super!
+      </button>
+    </footer>
+  </mynsweepr-signals-dialog>
+  <mynsweepr-signals-dialog [dialog-id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
+    <p class="dialog-content" role="img" aria-label="#loser">😞</p>
+    <footer class="dialog-buttons">
+      <button
+        type="button"
+        class="confirm"
+        aria-label="indicates losing, closes dialog"
+        (click)="closeDialog('lost')"
+      >
+        Fake News!
+      </button>
+    </footer>
+  </mynsweepr-signals-dialog>
+  <button
+    *ngFor="let cell of board.cells"
+    [ngClass]="cell.classes"
+    type="button"
+    [attr.aria-label]="cell.label"
+    [title]="cell.label"
+    (click)="cellClick($event)"
+    (contextmenu)="cellRightClick($event)"
+    (dblclick)="cellDoubleClick($event)"
+    [attr.data-index]="cell.index"
+  >
+    <span class="debug">{{ cell.index }}</span>
+    <span class="overlay">
+      <span class="flag" role="img" aria-label="flag">
+        🚩
+      </span>
+      <span class="mine" role="img" aria-label="boom!">
+        💣
+      </span>
+      <span
+        class="nearby"
+        role="img"
+        aria-label="number of nearby cells that have a mine"
+      >
+        {{ cell.nearby }}
+      </span>
+    </span>
+  </button>
+</div>
