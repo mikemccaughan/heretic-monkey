@@ -3,7 +3,7 @@ import { Board } from '../Board';
 import { EventEmitter } from '@angular/core';
 import { Cell } from '..';
 import { DialogService } from '../dialog.service';
-import { NgClass, NgStyle, NgFor } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
     templateUrl: './mineboard.component.html',
     styleUrls: ['./mineboard.component.css'],
     standalone: true,
-    imports: [NgClass, NgStyle, DialogComponent, NgFor]
+    imports: [NgClass, NgStyle, DialogComponent]
 })
 export class MineboardComponent {
   public rebuildBoardIds: string[] = ['won', 'lost'];

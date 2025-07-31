@@ -7,15 +7,20 @@
     "esModuleInterop": true,
     "declaration": false,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "strict": true,
     "target": "ESNext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["ESNext", "dom"]
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "ESNext",
+      "dom"
+    ]
   },
   "angularCompilerOptions": {
     "strictTemplates": true

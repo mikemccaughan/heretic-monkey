@@ -7,7 +7,7 @@
         class="confirm"
         aria-label="indicates winning, closes dialog"
         (click)="closeDialog('won')"
-      >
+        >
         Super!
       </button>
     </footer>
@@ -20,36 +20,37 @@
         class="confirm"
         aria-label="indicates losing, closes dialog"
         (click)="closeDialog('lost')"
-      >
+        >
         Fake News!
       </button>
     </footer>
   </app-dialog>
-  <button
-    *ngFor="let cell of board.cells"
-    [ngClass]="cell.classes"
-    type="button"
-    [attr.aria-label]="cell.label"
-    [title]="cell.label"
-    (click)="cellClick($event, cell)"
-    (contextmenu)="cellRightClick($event, cell)"
-    (dblclick)="cellDoubleClick($event, cell)"
-  >
-    <span class="debug">{{ cell.index }}</span>
-    <span class="overlay">
-      <span class="flag" role="img" aria-label="flag">
-        🚩
-      </span>
-      <span class="mine" role="img" aria-label="boom!">
-        💣
-      </span>
-      <span
-        class="nearby"
-        role="img"
-        aria-label="number of nearby cells that have a mine"
+  @for (cell of board.cells; track cell) {
+    <button
+      [ngClass]="cell.classes"
+      type="button"
+      [attr.aria-label]="cell.label"
+      [title]="cell.label"
+      (click)="cellClick($event, cell)"
+      (contextmenu)="cellRightClick($event, cell)"
+      (dblclick)="cellDoubleClick($event, cell)"
       >
-        {{ cell.nearby }}
+      <span class="debug">{{ cell.index }}</span>
+      <span class="overlay">
+        <span class="flag" role="img" aria-label="flag">
+          🚩
+        </span>
+        <span class="mine" role="img" aria-label="boom!">
+          💣
+        </span>
+        <span
+          class="nearby"
+          role="img"
+          aria-label="number of nearby cells that have a mine"
+          >
+          {{ cell.nearby }}
+        </span>
       </span>
-    </span>
-  </button>
+    </button>
+  }
 </div>

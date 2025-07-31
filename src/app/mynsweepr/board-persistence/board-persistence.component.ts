@@ -3,14 +3,14 @@ import { SavedBoard } from '../SavedBoard';
 import { MineboardService } from '../mineboard.service';
 import { DialogService } from '../dialog.service';
 import { DialogComponent } from '../dialog/dialog.component';
-import { NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-board-persistence',
     templateUrl: './board-persistence.component.html',
     styleUrls: ['./board-persistence.component.css'],
     standalone: true,
-    imports: [DialogComponent, NgFor]
+    imports: [DialogComponent]
 })
 export class BoardPersistenceComponent implements OnInit {
   constructor(

@@ -6,7 +6,7 @@ describe('MineboardService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: MineboardService = TestBed.get(MineboardService);
+    const service: MineboardService = TestBed.inject(MineboardService);
     expect(service).toBeTruthy();
   });
 });
