@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "build": "npm i && tsc --build",
-    "start": "npm i && node ../dist/server/index.js"
+    "build": "npx npm-check-updates -u && npm install --force && tsc --build",
+    "start": "npx npm-check-updates -u && npm install --force && node ../dist/server/index.js"
   },
   "private": true,
   "dependencies": {
