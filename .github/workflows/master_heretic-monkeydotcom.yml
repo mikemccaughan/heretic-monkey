@@ -22,7 +22,7 @@ jobs:
           node-version: lts/Jod
 
       - name: Install
-        run: npm install && cd server && npm install && cd ..
+        run: npm install --force && cd server && npm install && cd ..
 
       - name: Install Angular
         run: npm install -g @angular/cli
@@ -70,7 +70,7 @@ jobs:
         run: mv dist/browser/* ./
 
       - name: Login to Azure
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_72012F24D9714053A82BAC464D45169F }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C9B79B2D48F44A548B631B603111D8CB }}
