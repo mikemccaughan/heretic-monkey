@@ -1,6 +1,6 @@
 import { Component, computed, EventEmitter, Input, Output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { Utils } from 'src/app/common';
+import { Utils } from '../../common';
 import { SignalDifficulty } from '../models';
 
 @Component({

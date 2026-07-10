@@ -10,7 +10,7 @@ import {
 import { IClasslist } from '../IClasslist';
 import { DialogService } from '../dialog.service';
 import { NgClass } from '@angular/common';
-import { Utils } from 'src/app/common/utils';
+import { Utils } from '../../common';
 
 @Component({
     selector: 'app-dialog',

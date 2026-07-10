@@ -10,7 +10,7 @@ import {
 import { NgClass } from '@angular/common';
 import { MynsweeprSignalsDialogService } from '../components';
 import { IClasslist } from '../models';
-import { Utils } from 'src/app/common';
+import { Utils } from '../../common/utils';
 
 @Component({
   selector: 'mynsweepr-signals-dialog',
@@ -48,7 +48,7 @@ export class MynsweeprSignalsDialogComponent implements OnInit {
     if (Utils.isGoodString(this.autoFocusSelector) &&
         Utils.selectorFocusable(this.element.nativeElement, this.autoFocusSelector) &&
         !Utils.isBad(autofocusElement)) {
-          autofocusElement.focus();
+          autofocusElement?.focus();
     }
   }
 

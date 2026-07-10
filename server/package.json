@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npx npm-check-updates -u && npm install --force && tsc --build",
+    "buil": "tsc --build",
     "start": "npx npm-check-updates -u && npm install --force && node ../dist/server/index.js"
   },
   "private": true,

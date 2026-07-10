@@ -1,5 +1,5 @@
 import { Component, computed, Input, signal, Signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
-import { Utils } from 'src/app/common';
+import { Utils } from '../../common';
 import { SignalDifficulty, SignalScoreList } from '../models';
 
 @Component({
