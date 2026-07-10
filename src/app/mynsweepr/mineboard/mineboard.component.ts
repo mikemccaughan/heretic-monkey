@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Board } from '../Board';
 import { EventEmitter } from '@angular/core';
 import { Cell } from '..';
@@ -11,6 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
     templateUrl: './mineboard.component.html',
     styleUrls: ['./mineboard.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, NgStyle, DialogComponent]
 })
 export class MineboardComponent {

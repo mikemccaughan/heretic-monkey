@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { SavedBoard } from '../SavedBoard';
 import { MineboardService } from '../mineboard.service';
 import { DialogService } from '../dialog.service';
@@ -10,6 +10,7 @@ import { DialogComponent } from '../dialog/dialog.component';
     templateUrl: './board-persistence.component.html',
     styleUrls: ['./board-persistence.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DialogComponent]
 })
 export class BoardPersistenceComponent implements OnInit {

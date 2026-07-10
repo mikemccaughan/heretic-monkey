@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { SignalScoreboard } from '../models';
 
 @Component({
@@ -6,6 +6,7 @@ import { SignalScoreboard } from '../models';
   imports: [],
   templateUrl: './scoreboard.component.html',
   styleUrl: './scoreboard.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsScoreboardComponent {

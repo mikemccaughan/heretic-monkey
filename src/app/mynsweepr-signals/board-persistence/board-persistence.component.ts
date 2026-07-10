@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MynsweeprSignalsDialogComponent, MynsweeprSignalsDialogService, MynsweeprSignalsMineboardService } from '../components';
 import { SavedSignalBoard } from '../models';
 
@@ -7,6 +7,7 @@ import { SavedSignalBoard } from '../models';
   imports: [MynsweeprSignalsDialogComponent],
   templateUrl: './board-persistence.component.html',
   styleUrl: './board-persistence.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsBoardPersistenceComponent {

@@ -1,4 +1,4 @@
-import { Inject, Component, computed, signal } from "@angular/core";
+import { Inject, Component, computed, signal, ChangeDetectionStrategy } from "@angular/core";
 import {
   MynsweeprSignalsDifficultySelectorComponent,
   MynsweeprSignalsBoardPersistenceComponent,
@@ -21,6 +21,7 @@ import { SignalBoard, SignalDifficulty, SavedSignalBoard, SignalCell } from "./m
   ],
   templateUrl: "./mynsweepr-signals.component.html",
   styleUrl: "./mynsweepr-signals.component.css",
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class MynsweeprSignalsComponent {

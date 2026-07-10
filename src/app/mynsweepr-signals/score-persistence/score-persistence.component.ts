@@ -1,4 +1,4 @@
-import { Component, computed, Input, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, Input, signal, Signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { Utils } from 'src/app/common';
 import { SignalDifficulty, SignalScoreList } from '../models';
 
@@ -7,6 +7,7 @@ import { SignalDifficulty, SignalScoreList } from '../models';
   imports: [],
   templateUrl: './score-persistence.component.html',
   styleUrl: './score-persistence.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsScorePersistenceComponent {

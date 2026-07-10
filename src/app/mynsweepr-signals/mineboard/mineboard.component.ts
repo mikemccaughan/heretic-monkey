@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { SignalBoard, SignalCell } from '../models';
 import {
   MynsweeprSignalsDialogComponent,
@@ -16,6 +16,7 @@ import { NgClass, NgStyle } from '@angular/common';
   ],
   templateUrl: './mineboard.component.html',
   styleUrl: './mineboard.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsMineboardComponent {

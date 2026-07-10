@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  ElementRef
+  ElementRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { IClasslist } from '../IClasslist';
 import { DialogService } from '../dialog.service';
@@ -16,6 +17,7 @@ import { Utils } from 'src/app/common/utils';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass]
 })
 export class DialogComponent implements OnInit {

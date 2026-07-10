@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ScoreList, Difficulty } from '../';
 
 @Component({
@@ -6,6 +6,7 @@ import { ScoreList, Difficulty } from '../';
   imports: [],
   templateUrl: './score-persistence.component.html',
   styleUrl: './score-persistence.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class ScorePersistenceComponent implements OnInit {

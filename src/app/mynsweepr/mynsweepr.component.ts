@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Difficulty, ScoreList } from './';
 import { Board } from './Board';
 import { MineboardService } from './mineboard.service';
@@ -16,6 +16,7 @@ import { ScorePersistenceComponent } from "./score-persistence/score-persistence
     templateUrl: './mynsweepr.component.html',
     styleUrls: ['./mynsweepr.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent, ScorePersistenceComponent]
 })
 export class MynsweeprComponent {

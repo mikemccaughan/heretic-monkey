@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  ElementRef
+  ElementRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { MynsweeprSignalsDialogService } from '../components';
@@ -16,6 +17,7 @@ import { Utils } from 'src/app/common';
   imports: [NgClass],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsDialogComponent implements OnInit {
