@@ -39,7 +39,7 @@
     "core-js": "^3.49.0",
     "esbuild": "^0.28.1",
     "eslint": "^10.7.0",
-    "fast-uri": "^4.1.1",
+    "fast-uri": "^4.1.2",
     "follow-redirects": "^1.16.0",
     "hono": "^4.12.31",
     "ip-address": "^10.2.0",
