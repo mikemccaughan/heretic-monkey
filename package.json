@@ -42,7 +42,7 @@
     "fast-uri": "^4.1.1",
     "follow-redirects": "^1.16.0",
     "hono": "^4.12.31",
-    "ip-address": "^10.2.0",
+    "ip-address": "^10.4.0",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "^6.3.0",
     "jasmine-spec-reporter": "^7.0.0",
