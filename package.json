@@ -41,7 +41,7 @@
     "eslint": "^10.7.0",
     "fast-uri": "^4.1.1",
     "follow-redirects": "^1.16.0",
-    "hono": "^4.12.31",
+    "hono": "^4.13.0",
     "ip-address": "^10.2.0",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "^6.3.0",
