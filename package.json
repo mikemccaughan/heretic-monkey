@@ -49,6 +49,7 @@
     "hono": "^4.13.0",
     "ip-address": "^10.4.0",
     "istanbul-lib-instrument": "^6.0.3",
+    "istanbul-lib-source-maps": "5.0.6",
     "jasmine-core": "^6.3.0",
     "jasmine-spec-reporter": "^7.0.0",
     "js-yaml": "^5.2.3",
@@ -102,7 +103,7 @@
     },
     "karma-coverage-istanbul-reporter": {
       "karma": "$karma",
-      "istanbul-lib-source-maps": "$istanbul-lib-instrument",
+      "istanbul-lib-source-maps": "$istanbul-lib-source-maps",
       "brace-expansion": "$brace-expansion",
       "glob": "$glob",
       "minimatch": "$minimatch",
