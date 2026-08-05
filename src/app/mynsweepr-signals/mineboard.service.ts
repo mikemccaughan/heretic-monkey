@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ISignalBoardTraversalOptions, SignalBoard, SignalCell, SignalDifficulty, SavedSignalBoard, SignalScoreboard, ITraversable } from './models';
+import { ISignalBoardTraversalOptions, SignalBoard, SignalCell, SignalDifficulty, SavedSignalBoard, SignalScoreboard } from './models';
 import { wait } from '../mynsweepr-model';
 import { Utils } from '../common';
 import html2canvas from 'html2canvas';
-import { BaseTraversable } from './models/ITraversable';
+import { BaseTraversable, ITraversable } from './models/ITraversable';
 import { BaseBuildable, IBuildable } from './models/IBuildable';
 
 @Injectable({
