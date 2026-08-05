@@ -6,7 +6,7 @@
     Load Board
   </button>
 </div>
-<app-dialog dialog-id="load" [classes]="{ load: true }" title="Load Board">
+<app-dialog id="load" [classes]="{ load: true }" title="Load Board">
   <ul>
     @for (board of savedBoards; track board) {
       <li class="saved-board">

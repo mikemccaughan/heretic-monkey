@@ -1,5 +1,5 @@
 <div [ngClass]="board.classes" [ngStyle]="board.styles">
-  <app-dialog [dialog-id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
+  <app-dialog [id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#winning">🎉</p>
     <footer class="dialog-buttons">
       <button
@@ -12,7 +12,7 @@
       </button>
     </footer>
   </app-dialog>
-  <app-dialog [dialog-id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
+  <app-dialog [id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#loser">😞</p>
     <footer class="dialog-buttons">
       <button
