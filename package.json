@@ -102,7 +102,7 @@
     },
     "karma-coverage-istanbul-reporter": {
       "karma": "$karma",
-      "istanbul-lib-source-maps": "$istanbul-lib-source-maps",
+      "istanbul-lib-source-maps": "$istanbul-lib-instrument",
       "brace-expansion": "$brace-expansion",
       "glob": "$glob",
       "minimatch": "$minimatch",
