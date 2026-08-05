@@ -4,7 +4,7 @@ import { Utils } from '../../common';
 import { SignalDifficulty } from '../models';
 
 @Component({
-  selector: 'app-signals-difficulty-selector',
+  selector: 'app-difficulty-selector',
   imports: [ReactiveFormsModule],
   templateUrl: './difficulty-selector.component.html',
   styleUrl: './difficulty-selector.component.css',
@@ -20,7 +20,7 @@ export class MynsweeprSignalsDifficultySelectorComponent {
     }
   });
 
-  @Input()
+  @Input('difficulty')
   public get difficulty(): SignalDifficulty {
     return this._difficultyParsed() ?? SignalDifficulty.Default;
   }

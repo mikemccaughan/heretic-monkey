@@ -8,7 +8,7 @@ import {
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-signals-mineboard',
+  selector: 'app-mineboard',
   imports: [
     NgClass,
     NgStyle,
