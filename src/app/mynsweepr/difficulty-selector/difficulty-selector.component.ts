@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Difficulty } from '../Difficulty';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Difficulty } from '../../mynsweepr-model';
 import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,6 @@ import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angu
     templateUrl: './difficulty-selector.component.html',
     styleUrls: ['./difficulty-selector.component.css'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule]
 })
 export class DifficultySelectorComponent {

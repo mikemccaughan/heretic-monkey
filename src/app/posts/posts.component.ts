@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,14 +6,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     templateUrl: './posts.component.html',
     styleUrls: ['./posts.component.css'],
     imports: [RouterLink,RouterOutlet],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
-export class PostsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class PostsComponent {
 
 }

@@ -1,5 +1,5 @@
 <div [ngClass]="board.classes" [ngStyle]="board.styles">
-  <mynsweepr-signals-dialog [dialog-id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
+  <app-dialog [dialog-id]="'won'" [title]="'You won!'" [classes]="{ won: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#winning">🎉</p>
     <footer class="dialog-buttons">
       <button
@@ -11,8 +11,8 @@
         Super!
       </button>
     </footer>
-  </mynsweepr-signals-dialog>
-  <mynsweepr-signals-dialog [dialog-id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
+  </app-dialog>
+  <app-dialog [dialog-id]="'lost'" [title]="'You lost!'" [classes]="{ lost: true }" autoFocusSelector="button.confirm">
     <p class="dialog-content" role="img" aria-label="#loser">😞</p>
     <footer class="dialog-buttons">
       <button
@@ -24,7 +24,7 @@
         Fake News!
       </button>
     </footer>
-  </mynsweepr-signals-dialog>
+  </app-dialog>
   @for (cell of board.cells; track cell) {
     <button
       [ngClass]="cell.classes"

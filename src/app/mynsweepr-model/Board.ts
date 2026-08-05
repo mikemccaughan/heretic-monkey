@@ -7,11 +7,11 @@ export class Board {
   public scoreboard: Scoreboard = new Scoreboard();
   public scores: ScoreList = new ScoreList();
   public cells: Cell[] = [];
-  public cellsByCoords: { [key: string]: Cell } = {};
+  public cellsByCoords: Record<string, Cell> = {};
   public statusChange: EventEmitter<string> = new EventEmitter<string>();
   public scoresChange: EventEmitter<void> = new EventEmitter<void>();
-  private _status: string = 'unknown';
-  private _hadChange: boolean = false;
+  private _status = 'unknown';
+  private _hadChange = false;
   public get hadChange(): boolean {
     return this._hadChange;
   }
@@ -129,7 +129,7 @@ export class Board {
         return 9 * 42;
     }
   }
-  get styles(): any {
+  get styles(): Record<string, string> {
     return {
       width: this.width + 'px'
     };

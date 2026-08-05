@@ -1,9 +1,9 @@
 import { signal,WritableSignal } from '@angular/core';
-import { SignalBoard } from './Board';
+import { SignalBoard } from './';
 
 export class SavedSignalBoard {
-  public id: string = `board-${window.crypto.randomUUID()}`;
-  public img: string = `${this.id}.png`;
+  public id = `board-${window.crypto.randomUUID()}`;
+  public img = `${this.id}.png`;
   private _dateSaved: WritableSignal<Date> = signal(new Date());
   public get dateSaved(): Date {
     return this._dateSaved();

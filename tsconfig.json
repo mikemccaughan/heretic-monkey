@@ -11,6 +11,11 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "node:test" : ["./node_modules/@types/node/test"],
+      "src/main" : ["./src/main.ts"],
+    },
     "strict": true,
     "target": "ESNext",
     "typeRoots": [

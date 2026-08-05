@@ -1,12 +1,11 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SignalScoreboard } from '../models';
 
 @Component({
-  selector: 'mynsweepr-signals-scoreboard',
+  selector: 'app-scoreboard',
   imports: [],
   templateUrl: './scoreboard.component.html',
   styleUrl: './scoreboard.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsScoreboardComponent {

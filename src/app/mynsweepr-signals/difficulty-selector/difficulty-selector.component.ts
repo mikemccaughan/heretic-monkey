@@ -1,14 +1,13 @@
-import { Component, computed, EventEmitter, Input, Output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Utils } from '../../common';
 import { SignalDifficulty } from '../models';
 
 @Component({
-  selector: 'mynsweepr-signals-difficulty-selector',
+  selector: 'app-signals-difficulty-selector',
   imports: [ReactiveFormsModule],
   templateUrl: './difficulty-selector.component.html',
   styleUrl: './difficulty-selector.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsDifficultySelectorComponent {

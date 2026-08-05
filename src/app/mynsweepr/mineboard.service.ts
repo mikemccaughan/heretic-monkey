@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Difficulty, Cell, IBoardTraversalOptions, Direction, Scoreboard } from '.';
-import { Board } from './Board';
-import { SavedBoard } from './SavedBoard';
-import { wait } from './Timer';
+import { Board, Difficulty, Cell, IBoardTraversalOptions, Direction, Scoreboard, SavedBoard, wait } from '../mynsweepr-model/';
 import { Utils } from '../common/utils';
 import html2canvas from 'html2canvas';
 
@@ -10,13 +7,16 @@ import html2canvas from 'html2canvas';
   providedIn: 'root'
 })
 export class MineboardService {
+  public board: Board = new Board();
+
   constructor() {
     this.board = new Board();
   }
-  public board: Board;
+
   private preboard: number[][] = [];
 
-  private traversalOptions = {
+  public traversalOptions = {
+    cell: this.board?.cells?.[0] ?? new Cell(),
     canMoveUp: (cell: Cell) => !Utils.isGood(cell) ? false :
       cell.y !== this.decrementY(cell.y) &&
       (this.isHiddenByCoord(cell.x, this.decrementY(cell.y)) ||
@@ -34,10 +34,11 @@ export class MineboardService {
       (this.isHiddenByCoord(this.incrementX(cell.x), cell.y) ||
         cell.y === this.decrementY(cell.y)),
     addToResult: (cell: Cell) => !Utils.isGood(cell) ? false :
-      cell.isHidden && !cell.hasMine && !cell.hasFlag
+      cell.isHidden && !cell.hasMine && !cell.hasFlag,
+    result: new Set<Cell>(this.board?.cells ?? [])
   };
 
-  private applyTraversalOptions(existingOptions: Partial<IBoardTraversalOptions>): IBoardTraversalOptions {
+  public applyTraversalOptions(existingOptions: Partial<IBoardTraversalOptions>): IBoardTraversalOptions {
     if (!existingOptions) {
       return {
         ...this.traversalOptions,
@@ -205,7 +206,7 @@ export class MineboardService {
 
   //#region board load/save
   async saveBoard(board: Board): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>((resolve) => {
       window.performance.mark('mynsweepr.service saveBoard start');
       const boardId = `savedBoard${Date.now()}`;
       html2canvas(document.body).then(canvas => {
@@ -275,33 +276,33 @@ export class MineboardService {
   //#endregion board load/save
 
   //#region board traversal
-  private decrementX(x: number): number {
+  decrementX(x: number): number {
     return x === 0 ? 0 : x - 1;
   }
-  private decrementY(y: number): number {
+  decrementY(y: number): number {
     return y === 0 ? 0 : y - 1;
   }
-  private incrementX(x: number): number {
+  incrementX(x: number): number {
     return x === this.board.difficulty.width - 1
       ? this.board.difficulty.width - 1
       : x + 1;
   }
-  private incrementY(y: number): number {
+  incrementY(y: number): number {
     return y === this.board.difficulty.height - 1
       ? this.board.difficulty.height - 1
       : y + 1;
   }
-  private getCellByCoord(x: number, y: number): Cell {
+  getCellByCoord(x: number, y: number): Cell {
     return this.board.cellsByCoords[Board.getCoord(x, y)];
   }
-  private isHiddenByCoord(x: number, y: number): boolean {
+  isHiddenByCoord(x: number, y: number): boolean {
     const cell = this.getCellByCoord(x, y);
     if (!cell) {
       throw new Error(`No cell at (x, y): (${x}, ${y})`);
     }
     return cell.isHidden;
   }
-  private isContiguousWithOriginal(cell: Cell, original: Cell): boolean {
+  isContiguousWithOriginal(cell: Cell, original: Cell): boolean {
     const result =
       cell.index === original.index ||
       (cell.x === original.x && cell.y === original.y + 1) ||
@@ -317,17 +318,16 @@ export class MineboardService {
   //#endregion board traversal
 
   //#region special case board traversal
-  private cellIsInHistory(
+  cellIsInHistory(
     cell: Cell,
     options: IBoardTraversalOptions
   ): boolean {
     return (
-      (options.cellHistory || []).findIndex(ce => ce.index === cell.index) ===
-      -1
+      (options.cellHistory || []).findIndex(ce => ce.index === cell.index) === -1
     );
   }
 
-  private getCellsForRevealAround(options: IBoardTraversalOptions): Set<Cell> {
+  getCellsForRevealAround(options: IBoardTraversalOptions): Set<Cell> {
     window.performance.mark('mynsweepr.service getCellsForRevealAround start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
     options.result = new Set<Cell>([
@@ -344,10 +344,10 @@ export class MineboardService {
     return options.result;
   }
 
-  private getCellsForEpicFail(options: IBoardTraversalOptions): Set<Cell> {
+  getCellsForEpicFail(options: IBoardTraversalOptions): Set<Cell> {
     return new Set<Cell>(this.board.cells.filter(options.addToResult));
   }
-  private epicFail(cell: Cell): void {
+  epicFail(cell: Cell): void {
     if (!cell) {
       throw new Error(`No cell`);
     }
@@ -356,16 +356,13 @@ export class MineboardService {
     let cellsToUpdate = new Set<Cell>();
     const options: IBoardTraversalOptions = this.applyTraversalOptions({
       addToResult: (cel: Cell) => !!cel && cel.isHidden,
-      cell,
+      cell: cell,
       result: cellsToUpdate,
       cellHistory: [cell]
     });
     cellsToUpdate = this.getCellsForEpicFail(options);
-
-    for (const cel of cellsToUpdate) {
-      cel.isHidden = false;
-      wait(100).then(() => this.board.hadChange = !this.board.hadChange);
-    }
+    cellsToUpdate.forEach(cel => cel.isHidden = false);
+    wait(100).then(() => this.board.hadChange = !this.board.hadChange);
     window.performance.mark('mynsweepr.service epicFail end');
     window.performance.measure(
       'mynsweepr.service epicFail',
@@ -374,7 +371,7 @@ export class MineboardService {
     );
   }
 
-  private addForEpicWin(cell: Cell, originalCell: Cell): boolean {
+  addForEpicWin(cell: Cell, originalCell: Cell): boolean {
     return (
       cell.isHidden &&
       !cell.hasMine &&
@@ -382,7 +379,7 @@ export class MineboardService {
       this.isContiguousWithOriginal(cell, originalCell)
     );
   }
-  private getCellsForEpicWin(options: IBoardTraversalOptions): Set<Cell> {
+  getCellsForEpicWin(options: IBoardTraversalOptions): Set<Cell> {
     window.performance.mark('mynsweepr.service getCellsForEpicWin start');
     options.cellHistory = [...(options.cellHistory || []), options.cell];
 
@@ -412,7 +409,7 @@ export class MineboardService {
     );
     return options.result;
   }
-  private epicWin(cell: Cell): Cell {
+  epicWin(cell: Cell): Cell {
     if (!cell) {
       throw new Error(`No cell`);
     }
@@ -427,11 +424,8 @@ export class MineboardService {
       cellHistory: [cell]
     });
     cellsToUpdate = this.getCellsForEpicWin(options);
-
-    for (const cel of cellsToUpdate) {
-      cel.isHidden = false;
-      wait(100).then(() => this.board.hadChange = !this.board.hadChange);
-    }
+    cellsToUpdate.forEach(cel => cel.isHidden = false);
+    wait(100).then(() => this.board.hadChange = !this.board.hadChange);
     window.performance.mark('mynsweepr.service epicWin end');
     window.performance.measure(
       'mynsweepr.service epicWin',
@@ -452,7 +446,7 @@ export class MineboardService {
       // blow up
       this.epicFail(cell);
     } else if (cell.hasFlag) {
-      // hmmm...
+      // hmmm...Do nothing for now.
     } else if (cell.isHidden) {
       if (cell.nearby === 0) {
         this.epicWin(cell);
@@ -476,6 +470,7 @@ export class MineboardService {
     window.performance.mark('mynsweepr.service cellFlag start');
     cell.hasFlag = !cell.hasFlag;
     cell.isHidden = !cell.hasFlag;
+    this.board.cells[cell.index] = cell;
     this.board.hadChange = !this.board.hadChange;
     this.startTimer();
     window.performance.mark('mynsweepr.service cellFlag end');
@@ -495,13 +490,16 @@ export class MineboardService {
     const options: IBoardTraversalOptions = this.applyTraversalOptions({
       addToResult: (cel: Cell) =>
         cel && this.isContiguousWithOriginal(cel, cell),
-      result: cellsToUpdate,
-      cell
+      result: new Set(cellsToUpdate),
+      cell: this.board.cells[cell.index] ?? new Cell()
     });
     cellsToUpdate = this.getCellsForRevealAround(options);
     // check to see if the number of flagged cells adjacent to cell equals the nearby number
     const numberOfFlags = [...cellsToUpdate].reduce(
-      (agg, curr) => (agg += curr.hasFlag ? 1 : 0),
+      (agg, curr) => {
+        agg += curr.hasFlag ? 1 : 0; 
+        return agg; 
+      },
       0
     );
     if (numberOfFlags !== cell.nearby) {

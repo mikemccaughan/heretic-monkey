@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { MynsweeprSignalsDialogComponent, MynsweeprSignalsDialogService, MynsweeprSignalsMineboardService } from '../components';
 import { SavedSignalBoard } from '../models';
 
 @Component({
-  selector: 'mynsweepr-signals-board-persistence',
+  selector: 'app-board-persistence',
   imports: [MynsweeprSignalsDialogComponent],
   templateUrl: './board-persistence.component.html',
   styleUrl: './board-persistence.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsBoardPersistenceComponent {
-  constructor(
-    public mineboardSvc: MynsweeprSignalsMineboardService,
-    public dialogSvc: MynsweeprSignalsDialogService
-  ) {
+  public mineboardSvc: MynsweeprSignalsMineboardService;
+  public dialogSvc: MynsweeprSignalsDialogService;
+
+  constructor() {
+    this.dialogSvc =  inject(MynsweeprSignalsDialogService);
+    this.mineboardSvc = inject(MynsweeprSignalsMineboardService);
     this.saveBoardRequested = new EventEmitter<void>();
     this.loadBoardRequested = new EventEmitter<SavedSignalBoard>();
   }
@@ -38,6 +39,4 @@ export class MynsweeprSignalsBoardPersistenceComponent {
     this.loadBoardRequested.emit(savedBoard);
     this.dialogSvc.close('load');
   }
-
-  ngOnInit() {}
 }

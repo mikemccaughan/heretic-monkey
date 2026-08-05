@@ -1,9 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Difficulty, ScoreList } from './';
-import { Board } from './Board';
+import { Component, inject } from '@angular/core';
+import { Cell, Board, Difficulty, SavedBoard } from '../mynsweepr-model';
 import { MineboardService } from './mineboard.service';
-import { SavedBoard } from './SavedBoard';
-import { Cell } from './Cell';
 import { DialogService } from './dialog.service';
 import { DifficultySelectorComponent } from './difficulty-selector/difficulty-selector.component';
 import { BoardPersistenceComponent } from './board-persistence/board-persistence.component';
@@ -12,23 +9,24 @@ import { MineboardComponent } from './mineboard/mineboard.component';
 import { ScorePersistenceComponent } from "./score-persistence/score-persistence.component";
 
 @Component({
-    selector: 'app-mynsweepr',
-    templateUrl: './mynsweepr.component.html',
-    styleUrls: ['./mynsweepr.component.css'],
-    standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent, ScorePersistenceComponent]
+  selector: 'app-mynsweepr',
+  templateUrl: './mynsweepr.component.html',
+  styleUrls: ['./mynsweepr.component.css'],
+  standalone: true,
+  imports: [DifficultySelectorComponent, BoardPersistenceComponent, ScoreboardComponent, MineboardComponent, ScorePersistenceComponent]
 })
 export class MynsweeprComponent {
+  public mineboardSvc: MineboardService;
+  public dialogSvc: DialogService;
   public board: Board = new Board();
   public savedBoards: SavedBoard[] = [];
-  public dialogs: { [key: string]: boolean } = {};;
+  public dialogs: Record<string, boolean> = {};;
 
   constructor(
-    public mineboardSvc: MineboardService,
-    public dialogSvc: DialogService
   ) {
     window.performance.mark('mynsweepr.component construction start');
+    this.mineboardSvc = inject(MineboardService);
+    this.dialogSvc = inject(DialogService);
     this.board = this.mineboardSvc.buildBoard(this.statusChanged.bind(this));
     this.board.hadChange = !this.board.hadChange;
     window.performance.mark('mynsweepr.component construction end');

@@ -7,4 +7,5 @@ export { IBoardTraversalOptions } from './IBoardTraversalOptions';
 export { Score, ScoreList } from './Score';
 export { Board } from './Board';
 export { SavedBoard } from './SavedBoard';
-export { formatTime, timer, wait } from './Timer'
+export { formatTime, timer, wait } from './Timer';
+export { ITraversable } from '../mynsweepr-signals/models/ITraversable';

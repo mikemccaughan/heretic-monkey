@@ -6,7 +6,7 @@
     Load Board
   </button>
 </div>
-<mynsweepr-signals-dialog dialog-id="load" [classes]="{ load: true }" title="Load Board">
+<app-dialog dialog-id="load" [classes]="{ load: true }" title="Load Board">
   <ul>
     @for (board of savedBoards; track board.id) {
       <li class="saved-board">
@@ -20,4 +20,4 @@
       </li>
     }
   </ul>
-</mynsweepr-signals-dialog>
+</app-dialog>

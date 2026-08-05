@@ -1,5 +1,5 @@
 import { signal,WritableSignal } from '@angular/core';
-import { timer } from './';
+import { timer } from '../../mynsweepr-model';
 import { Subscription } from 'rxjs';
 
 export class SignalScoreboard {

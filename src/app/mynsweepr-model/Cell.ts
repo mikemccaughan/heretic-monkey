@@ -1,12 +1,12 @@
 import { IClasslist } from './IClasslist';
 
 export class Cell {
-  public isHidden: boolean = true;
-  public hasFlag: boolean = false;
-  public index: number = -1;
-  public value: number = -1;
-  public x: number = -1;
-  public y: number = -1;
+  public isHidden = true;
+  public hasFlag = false;
+  public index = -1;
+  public value = -1;
+  public x = -1;
+  public y = -1;
   public get nearby(): number {
     return this.value >= 0 ? this.value : 0;
   }

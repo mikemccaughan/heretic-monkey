@@ -1,9 +1,12 @@
 import { signal,WritableSignal } from '@angular/core';
-import { SignalDifficulty, formatTime } from "./";
+import { SignalDifficulty } from ".";
+import { formatTime } from '../../mynsweepr-model';
 
 export class SignalScore {
   private _difficulty: WritableSignal<SignalDifficulty> = signal(SignalDifficulty.Default);
   private _score: WritableSignal<string> = signal('00:00:00');
+  private static _formatRe = /\d{2}:\d{2}:\d{2}/;
+  public static DefaultScore = '00:00:00';
 
   constructor(difficulty?: SignalDifficulty, score?: string | number | Date) {
     if (!difficulty && !score) {
@@ -49,9 +52,9 @@ export class SignalScore {
       this._score.set(formatTime(new Date(value)));
     }
 
-    if (typeof value === 'string' && /\d{2}\:\d{2}\:\d{2}/.test(value)) {
+    if (typeof value === 'string' && SignalScore._formatRe.test(value)) {
       this._score.set(formatTime(new Date(`1970-01-01T${value}Z`)));
-    } else if (typeof value === 'string' && !/\d{2}\:\d{2}\:\d{2}/.test(value)) {
+    } else if (typeof value === 'string' && !SignalScore._formatRe.test(value)) {
       console.warn(`The value passed in, ${value}, is not a valid Date and cannot be formatted as a time`);
       return;
     }
@@ -66,7 +69,7 @@ export class SignalScore {
     }
   }
   public get id(): string {
-    return `${(this.difficulty?.value ?? '?')}-${this.score?.replaceAll(/\:/g,'_') ?? '00_00_00'}`;
+    return `${(this.difficulty?.value ?? '?')}-${this.score?.replaceAll(/:/g,'_') ?? SignalScore.DefaultScore.replaceAll(/:/g, '_')}`;
   }
 }
 
@@ -74,25 +77,25 @@ export class SignalScoreList extends Array<SignalScore> {
   constructor(...items: SignalScore[]) {
     super(
       ...items
-        .filter(s => s?.hasOwnProperty('score') && s?.hasOwnProperty('difficulty'))
+        .filter(s => s && 'score' in s && 'difficulty' in s)
         .map(s => new SignalScore(new SignalDifficulty(s['difficulty']), s['score']))
     );
   }
   public static Default: SignalScoreList = new SignalScoreList();
   public static highScoreForDifficulty(scores: SignalScoreList, diff: SignalDifficulty | string): SignalScore {
-    const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');
+    const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : SignalDifficulty.Default.value);
     return SignalScoreList.forDifficulty(scores, diff).at(0) ?? new SignalScore(new SignalDifficulty(diffValue));
   }
-  public static forDifficulty(scores: SignalScoreList, diff: SignalDifficulty | string, max: number = 5): SignalScoreList {
-    const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');
+  public static forDifficulty(scores: SignalScoreList, diff: SignalDifficulty | string, max = 5): SignalScoreList {
+    const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : SignalDifficulty.Default.value);
     const simplified = scores.map(score => ({
-      diff: (score.difficulty ?? score['_difficulty'])?.value ?? '9',
-      score: (score.score ?? score['_score'])
+      diff: (score.difficulty ?? score['_difficulty'])?.value ?? SignalDifficulty.Default.value,
+      score: (score.score ?? score['_score'] ?? SignalScore.DefaultScore)
     }));
     return new SignalScoreList(
       ...simplified
         .filter((scr) => scr.diff === diffValue)
-        .sort((a, b) => (a.score ?? '00:00:00').localeCompare(b.score ?? '00:00:00'))
+        .sort((a, b) => (a.score ?? SignalScore.DefaultScore).localeCompare(b.score ?? SignalScore.DefaultScore))
         .slice(-1 * max)
         .map((scr) => new SignalScore(new SignalDifficulty(scr.diff), scr.score))
     );

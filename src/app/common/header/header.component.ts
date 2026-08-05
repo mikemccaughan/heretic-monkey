@@ -1,20 +1,13 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   @Input()
-  public title: string = 'Heretic-Monkey.com';
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  public title = 'Heretic-Monkey.com';
 }

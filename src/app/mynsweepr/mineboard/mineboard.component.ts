@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, ChangeDetectionStrategy } from '@angular/core';
-import { Board } from '../Board';
+import { Component, Input, Output, inject } from '@angular/core';
+import { Board,Cell } from '../../mynsweepr-model';
 import { EventEmitter } from '@angular/core';
-import { Cell } from '..';
 import { DialogService } from '../dialog.service';
 import { NgClass, NgStyle } from '@angular/common';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -11,13 +10,15 @@ import { DialogComponent } from '../dialog/dialog.component';
     templateUrl: './mineboard.component.html',
     styleUrls: ['./mineboard.component.css'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, NgStyle, DialogComponent]
 })
 export class MineboardComponent {
   public rebuildBoardIds: string[] = ['won', 'lost'];
+  public dialogSvc: DialogService;  
 
-  constructor(public dialogSvc: DialogService) {}
+  constructor() {
+    this.dialogSvc = inject(DialogService);
+  }
 
   @Input()
   public board: Board = new Board();

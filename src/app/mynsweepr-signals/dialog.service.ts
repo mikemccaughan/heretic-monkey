@@ -5,14 +5,15 @@ import { MynsweeprSignalsDialogComponent } from './components';
   providedIn: 'root'
 })
 export class MynsweeprSignalsDialogService {
-  public components: { [key: string]: MynsweeprSignalsDialogComponent } = {};
+  public components: Record<string, MynsweeprSignalsDialogComponent> = {};
 
-  constructor() { }
 
   public register(id: string, component: MynsweeprSignalsDialogComponent): void {
     this.components[id] = component;
     this.components[id].closed.subscribe((closedId: string) => {
-
+      if (Object.hasOwn(this.components, closedId) && !this.components[closedId].closed) {
+        this.components[closedId].close();
+      }
     });
   }
 

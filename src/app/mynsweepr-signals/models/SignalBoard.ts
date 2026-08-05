@@ -1,8 +1,21 @@
 import { Utils } from '../../common';
-import { SignalDifficulty, SignalScoreboard, SignalCell, IClasslist, SignalScore, SignalScoreList } from './';
-import { computed,signal,Signal,WritableSignal,EventEmitter } from '@angular/core';
+import { IClasslist } from '../../mynsweepr-model';
+import { SignalDifficulty, SignalScoreboard, SignalCell, SignalScore, SignalScoreList, ITraversable, ISignalBoardTraversalOptions } from '.';
+import { computed, signal, Signal, WritableSignal, EventEmitter } from '@angular/core';
+import { BaseBuildable, IBuildable } from './IBuildable';
+import { BaseTraversable } from './ITraversable';
+import { BaseBoardTraversalOptions } from './ISignalBoardTraversalOptions';
 
-export class SignalBoard {
+export class SignalBoard implements IBuildable, ITraversable {
+  private builtBoard: IBuildable = new BaseBuildable(this);
+  private traversable: ITraversable = new BaseTraversable();
+
+  public board: SignalBoard = new SignalBoard();
+  public preboard: number[][] = []
+  public cellsByCoords: Record<string, SignalCell> = {};
+  public statusChange: EventEmitter<string> = new EventEmitter<string>();
+  public scoresChange: EventEmitter<void> = new EventEmitter<void>();
+
   private _difficultySignal: WritableSignal<SignalDifficulty> = signal(SignalDifficulty.Default);
   public get difficulty(): SignalDifficulty {
     return this._difficultySignal();
@@ -62,9 +75,6 @@ export class SignalBoard {
   public set cells(value: SignalCell[]) {
     this._cellsSignal.set(value);
   }
-  public cellsByCoords: { [key: string]: SignalCell } = {};
-  public statusChange: EventEmitter<string> = new EventEmitter<string>();
-  public scoresChange: EventEmitter<void> = new EventEmitter<void>();
   private _hadChange: WritableSignal<boolean> = signal(false);
   public get hadChange(): boolean {
     return this._hadChange();
@@ -76,6 +86,51 @@ export class SignalBoard {
       this.scoresChange.emit();
     }
   }
+
+  private _classesSignal: Signal<IClasslist> = computed(() => ({
+    board: true,
+    won: this._statusSignal() === 'won',
+    lost: this._statusSignal() === 'lost'
+  }));
+  public get classes(): IClasslist {
+    return this._classesSignal();
+  }
+  private _widthSignal: Signal<number> = computed(() => {
+    return this.difficulty.width * 42;
+  });
+  public get width(): number {
+    return this._widthSignal();
+  }
+  private _heightSignal: Signal<number> = computed(() => {
+    return this.difficulty.height * 42;
+  });
+  public get height(): number {
+    return this._heightSignal();
+  }
+  private _stylesSignal: Signal<Record<string, string>> = computed(() => ({
+    width: `${this._widthSignal()}px`
+  }));
+  get styles(): Record<string, string> {
+    return this._stylesSignal();
+  }
+
+  private _remainingSignal: Signal<number> = computed(() => {
+    const mines = this._cellsSignal().filter(
+      cell => (cell.value || 0) < 0 && !cell.hasFlag
+    );
+    return mines.length;
+  });
+  getRemaining(): number {
+    return this._remainingSignal();
+  }
+  private _hasHiddenCellsSignal: Signal<boolean> =
+    computed(() => this._cellsSignal().some(cell => cell.isHidden));
+
+  public hasHiddenCells(): boolean {
+    return this._hasHiddenCellsSignal();
+  }
+  private _isFailureSignal: Signal<boolean> =
+    computed(() => this._cellsSignal().some(cell => cell.hasMine && !cell.isHidden && !cell.hasFlag));
 
   constructor(board?: Partial<SignalBoard>) {
     window.performance.mark('Board constructor start');
@@ -105,6 +160,8 @@ export class SignalBoard {
       );
     }
     this.scores = this._loadScores();
+    this.builtBoard = new BaseBuildable(this);
+    this.traversable = new BaseTraversable();
     this.scoresChange.emit();
     window.performance.mark('Board constructor end');
     window.performance.measure(
@@ -112,7 +169,7 @@ export class SignalBoard {
       'Board constructor start',
       'Board constructor end'
     );
-}
+  }
 
   public static getCoord(x: number, y: number): string {
     return `x${`000${x}`.slice(-3)}y${`000${y}`.slice(-3)}`;
@@ -131,56 +188,6 @@ export class SignalBoard {
       'Board populateBoardByCoord end'
     );
   }
-
-  private _classesSignal: Signal<IClasslist> = computed(() => ({
-    board: true,
-    won: this._statusSignal() === 'won',
-    lost: this._statusSignal() === 'lost'
-  }));
-  public get classes(): IClasslist {
-    return this._classesSignal();
-  }
-  private _widthSignal: Signal<number> = computed(() => {
-    const difficult = parseInt(this.difficulty.value, 10);
-    switch (difficult) {
-      case 16:
-        return 16 * 42;
-      case 30:
-        return 30 * 42;
-      case -1:
-        return this.difficulty.width * 42;
-      case 9:
-      default:
-        return 9 * 42;
-    }
-  });
-  public get width(): number {
-    return this._widthSignal();
-  }
-  private _stylesSignal: Signal<any> = computed(() => ({
-    width: `${this._widthSignal()}px`
-  }));
-  get styles(): any {
-    return this._stylesSignal();
-  }
-
-  private _remainingSignal: Signal<number> = computed(() => {
-    const mines = this._cellsSignal().filter(
-      cell => (cell.value || 0) < 0 && !cell.hasFlag
-    );
-    return mines.length;
-  });
-  getRemaining(): number {
-    return this._remainingSignal();
-  }
-  private _hasHiddenCellsSignal: Signal<boolean> =
-    computed(() => this._cellsSignal().some(cell => cell.isHidden));
-
-  public hasHiddenCells(): boolean {
-    return this._hasHiddenCellsSignal();
-  }
-  private _isFailureSignal: Signal<boolean> =
-    computed(() => this._cellsSignal().some(cell => cell.hasMine && !cell.isHidden && !cell.hasFlag));
 
   public isFailure(): boolean {
     return this._isFailureSignal();
@@ -208,4 +215,56 @@ export class SignalBoard {
     const jsonScores = JSON.stringify(this.scores);
     window.localStorage.setItem('hm.mynsweepr.scores', jsonScores);
   }
+
+  // #region IBuildable
+  sortCells = (): void => this.builtBoard.sortCells();
+  initPreboard = (): void => this.builtBoard.initPreboard();
+  populatePreboard = (): void => this.builtBoard.populatePreboard();
+  buildCells = (): void => this.builtBoard.buildCells();
+  buildBoard = (
+    statusChange: (status: string) => void,
+    difficulty?: SignalDifficulty
+  ): SignalBoard => this.builtBoard.buildBoard(statusChange, difficulty);
+  // #endregion IBuildable
+
+  // #region ITraversable
+
+  // #region traversal options
+  cellHistory: SignalCell[] = [];
+  traversalOptions: ISignalBoardTraversalOptions = new BaseBoardTraversalOptions(this, this.traversable, undefined, this.cellHistory);
+  applyTraversalOptions(existingOptions: Partial<ISignalBoardTraversalOptions>): ISignalBoardTraversalOptions {
+    return {
+      ...existingOptions,
+      ...this.traversalOptions
+    }
+  }
+  // #endregion traversal options
+
+  // #region traversal methods
+  decrementX = (x: number): number => this.traversable.decrementX(x);
+  decrementY = (y: number): number => this.traversable.decrementY(y);
+  incrementX = (x: number): number => this.traversable.incrementX(x);
+  incrementY = (y: number): number => this.traversable.incrementY(y);
+  getCellByCoord = (x: number, y: number): SignalCell | undefined => this.traversable.getCellByCoord(x, y);
+  isHiddenByCoord = (x: number, y: number): boolean => this.traversable.isHiddenByCoord(x, y);
+  isContiguousWithOriginal = (cell: SignalCell, original: SignalCell): boolean => this.traversable.isContiguousWithOriginal(cell, original);
+  // #endregion traversal methods
+
+  // #region specialized traversal methods
+  cellIsInHistory = (
+    cell: SignalCell,
+    options: ISignalBoardTraversalOptions
+  ): boolean => this.cellIsInHistory(cell, options);
+
+  getCellsForRevealAround = (options: ISignalBoardTraversalOptions): Set<SignalCell> => this.traversable.getCellsForRevealAround(options);
+
+  getCellsForEpicFail = (options: ISignalBoardTraversalOptions): Set<SignalCell> => this.traversable.getCellsForEpicFail(options);
+  epicFail = (cell: SignalCell): void => this.traversable.epicFail(cell);
+
+  addForEpicWin = (cell: SignalCell, originalCell: SignalCell): boolean => this.traversable.addForEpicWin(cell, originalCell);
+  getCellsForEpicWin = (options: ISignalBoardTraversalOptions): Set<SignalCell> => this.traversable.getCellsForEpicWin(options);
+  epicWin = (cell: SignalCell): SignalCell => this.traversable.epicWin(cell);
+  // #endregion specialized traversal methods
+
+  // #endregion ITraversable
 }

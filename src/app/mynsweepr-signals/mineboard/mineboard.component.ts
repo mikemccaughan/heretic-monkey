@@ -1,4 +1,4 @@
-import { Component, Inject, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { SignalBoard, SignalCell } from '../models';
 import {
   MynsweeprSignalsDialogComponent,
@@ -8,7 +8,7 @@ import {
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'mynsweepr-signals-mineboard',
+  selector: 'app-signals-mineboard',
   imports: [
     NgClass,
     NgStyle,
@@ -16,18 +16,19 @@ import { NgClass, NgStyle } from '@angular/common';
   ],
   templateUrl: './mineboard.component.html',
   styleUrl: './mineboard.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class MynsweeprSignalsMineboardComponent {
+
   @Input()
   public board: SignalBoard = new SignalBoard();
-  constructor(
-    private dialogService: MynsweeprSignalsDialogService,
-    @Inject('MynsweeprSignalsMineboardService')
-    private mineboardSvc: MynsweeprSignalsMineboardService
-  ) {
 
+  private dialogService: MynsweeprSignalsDialogService;
+  private mineboardSvc: MynsweeprSignalsMineboardService;
+
+  constructor() {
+    this.dialogService = inject(MynsweeprSignalsDialogService);
+    this.mineboardSvc = inject(MynsweeprSignalsMineboardService);
   }
   closeDialog(id: string) {
     this.dialogService.close(id);

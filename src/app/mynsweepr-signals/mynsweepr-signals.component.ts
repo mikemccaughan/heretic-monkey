@@ -1,4 +1,4 @@
-import { Inject, Component, computed, signal, ChangeDetectionStrategy } from "@angular/core";
+import { Component, computed, signal, inject } from "@angular/core";
 import {
   MynsweeprSignalsDifficultySelectorComponent,
   MynsweeprSignalsBoardPersistenceComponent,
@@ -11,7 +11,7 @@ import { MynsweeprSignalsMineboardService } from "./mineboard.service";
 import { SignalBoard, SignalDifficulty, SavedSignalBoard, SignalCell } from "./models";
 
 @Component({
-  selector: "mynsweepr-signals-app",
+  selector: "app-app",
   imports: [
     MynsweeprSignalsDifficultySelectorComponent,
     MynsweeprSignalsBoardPersistenceComponent,
@@ -21,18 +21,17 @@ import { SignalBoard, SignalDifficulty, SavedSignalBoard, SignalCell } from "./m
   ],
   templateUrl: "./mynsweepr-signals.component.html",
   styleUrl: "./mynsweepr-signals.component.css",
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class MynsweeprSignalsComponent {
   public board: SignalBoard;
+  private mineboardSvc: MynsweeprSignalsMineboardService;
+  private dialogSvc: MynsweeprSignalsDialogService;
 
-  constructor(
-    @Inject(MynsweeprSignalsMineboardService)
-    private mineboardSvc: MynsweeprSignalsMineboardService,
-    private dialogSvc: MynsweeprSignalsDialogService
-  ) {
+  constructor() {
     window.performance.mark('mynsweepr-signals.component construction start');
+    this.dialogSvc = inject(MynsweeprSignalsDialogService);
+    this.mineboardSvc = inject(MynsweeprSignalsMineboardService);
     this.board = this.mineboardSvc.buildBoard(this.statusChanged.bind(this));
     this.board.hadChange = !this.board.hadChange;
     window.performance.mark('mynsweepr-signals.component construction end');

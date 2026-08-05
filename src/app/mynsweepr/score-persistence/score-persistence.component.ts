@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ScoreList, Difficulty } from '../';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { ScoreList, Difficulty } from '../../mynsweepr-model';
 
 @Component({
   selector: 'app-score-persistence',
   imports: [],
   templateUrl: './score-persistence.component.html',
   styleUrl: './score-persistence.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class ScorePersistenceComponent implements OnInit {

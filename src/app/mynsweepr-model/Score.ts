@@ -3,7 +3,7 @@ import { formatTime } from "./Timer";
 
 export class Score {
   private _difficulty: Difficulty = Difficulty.Default;
-  private _score: string = '00:00:00';
+  private _score = '00:00:00';
 
   constructor(difficulty?: Difficulty, score?: string | number | Date) {
     if (!difficulty && !score) {
@@ -49,7 +49,7 @@ export class Score {
       this.score = new Date(value);
     }
 
-    if (typeof value === 'string' && /\d{2}\:\d{2}\:\d{2}/.test(value)) {
+    if (typeof value === 'string' && /\d{2}:\d{2}:\d{2}/.test(value)) {
       this.score = new Date(`1970-01-01T${value}Z`);
     }
 
@@ -63,7 +63,7 @@ export class Score {
     }
   }
   public get id(): string {
-    return `${(this.difficulty?.value ?? '?')}-${this.score?.replaceAll(/\:/g,'_') ?? '00_00_00'}`;
+    return `${(this.difficulty?.value ?? '?')}-${this.score?.replaceAll(/:/g,'_') ?? '00_00_00'}`;
   }
 }
 
@@ -71,7 +71,7 @@ export class ScoreList extends Array<Score> {
   constructor(...items: Score[]) {
     super(
       ...items
-        .filter(s => s?.hasOwnProperty('_score') && s?.hasOwnProperty('_difficulty'))
+        .filter(s => s && Object.hasOwn(s, '_score') && Object.hasOwn(s, '_difficulty'))
         .map(s => new Score(new Difficulty(s['_difficulty']), s['_score']))
     );
   }
@@ -80,7 +80,7 @@ export class ScoreList extends Array<Score> {
     const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');
     return ScoreList.forDifficulty(scores, diff).at(0) ?? new Score(new Difficulty(diffValue));
   }
-  public static forDifficulty(scores: ScoreList, diff: Difficulty | string, max: number = 5): ScoreList {
+  public static forDifficulty(scores: ScoreList, diff: Difficulty | string, max = 5): ScoreList {
     const diffValue = ((typeof diff === 'string') ? diff : 'value' in diff ? diff.value : '9');
     const simplified = scores.map(score => ({
       diff: (score.difficulty ?? score['_difficulty'])?.value ?? '9',
@@ -89,7 +89,7 @@ export class ScoreList extends Array<Score> {
     return new ScoreList(
       ...simplified
         .filter((scr) => scr.diff === diffValue)
-        .sort((a, b) => (a.score ?? '00:00:00').localeCompare(b.score ?? '00:00:00'))
+        .sort((a, b) => ((a && a.score) ?? '00:00:00').localeCompare((b && b.score) ?? '00:00:00'))
         .slice(-1 * max)
         .map((scr) => new Score(new Difficulty(scr.diff), scr.score))
     );

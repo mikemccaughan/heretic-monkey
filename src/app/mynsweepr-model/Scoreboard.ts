@@ -1,3 +1,4 @@
+import { SignalScore } from '../mynsweepr-signals/models';
 import { timer } from './Timer';
 import { Subscription } from 'rxjs';
 
@@ -7,10 +8,10 @@ export class Scoreboard {
   timerSub?: Subscription;
   constructor(scoreboard?: Partial<Scoreboard>) {
     if (!scoreboard) {
-      this.time = '00:00:00';
+      this.time = SignalScore.DefaultScore;
       this.remaining = 0;
     } else {
-      this.time = scoreboard.time ?? '00:00:00';
+      this.time = scoreboard.time ?? SignalScore.DefaultScore;
       this.remaining = scoreboard.remaining ?? 0;
     }
   }

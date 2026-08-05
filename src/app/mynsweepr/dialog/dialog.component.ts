@@ -5,9 +5,9 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ChangeDetectionStrategy
+  inject
 } from '@angular/core';
-import { IClasslist } from '../IClasslist';
+import { IClasslist } from '../../mynsweepr-model';
 import { DialogService } from '../dialog.service';
 import { NgClass } from '@angular/common';
 import { Utils } from '../../common';
@@ -17,23 +17,25 @@ import { Utils } from '../../common';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass]
 })
 export class DialogComponent implements OnInit {
-  constructor(
-    public dialogService: DialogService,
-    public element: ElementRef
-  ) {}
+  public dialogService: DialogService;
+  public element: ElementRef;
 
-  @Input('dialog-id')
-  public id: string = `dialog-${window.crypto.randomUUID()}`;
+  constructor() {
+    this.dialogService = inject(DialogService);
+    this.element = inject(ElementRef);
+  }
+
   @Input()
-  public title: string = `Dialog`;
+  public id = `dialog-${window.crypto.randomUUID()}`;
+  @Input()
+  public title = `Dialog`;
   @Input()
   public classes: IClasslist = {};
   @Input()
-  public autoFocusSelector: string = '[autofocus]';
+  public autoFocusSelector = '[autofocus]';
   @Output()
   public closed: EventEmitter<string> = new EventEmitter<string>();
 

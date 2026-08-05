@@ -1,10 +1,8 @@
-export { IClasslist } from '../../mynsweepr-model/IClasslist';
-export { SignalDifficulty } from './Difficulty';
-export { SignalScoreboard } from './Scoreboard';
-export { SignalCell } from './Cell';
-export { Direction } from '../../mynsweepr-model/Direction';
-export { ISignalBoardTraversalOptions } from './IBoardTraversalOptions';
-export { SignalScore, SignalScoreList } from './Score';
-export { SignalBoard } from './Board';
-export { SavedSignalBoard } from './SavedBoard';
-export { formatTime, timer, wait } from '../../mynsweepr-model/Timer'
+export { SignalDifficulty } from './SignalDifficulty';
+export { SignalScoreboard } from './SignalScoreboard';
+export { SignalCell } from './SignalCell';
+export { SignalScore, SignalScoreList } from './SignalScore';
+export { SignalBoard } from './SignalBoard';
+export { SavedSignalBoard } from './SavedSignalBoard';
+export { ITraversable } from './ITraversable';
+export {ISignalBoardTraversalOptions} from './ISignalBoardTraversalOptions';

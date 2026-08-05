@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { DialogComponent } from './dialog/dialog.component';
+import { Utils } from '../common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DialogService {
-  public components: { [key: string]: DialogComponent } = {};
-  constructor() {}
+  public components: Record<string, DialogComponent> = {};
+  constructor() {
+    Utils.noop();
+  }
 
   public register(id: string, component: DialogComponent): void {
     this.components[id] = component;
     this.components[id].closed.subscribe((closedId: string) => {
-
+      if (this.components[closedId]) {
+        this.close(closedId);
+      }
     });
   }
 

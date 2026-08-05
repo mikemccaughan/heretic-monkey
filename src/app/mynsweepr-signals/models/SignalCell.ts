@@ -1,4 +1,4 @@
-import { computed,signal,Signal,WritableSignal } from '@angular/core';
+import { computed, signal, Signal, WritableSignal } from '@angular/core';
 import { IClasslist } from '../../mynsweepr-model/IClasslist';
 
 export class SignalCell {
@@ -16,10 +16,10 @@ export class SignalCell {
   public set hasFlag(value: boolean) {
     this._hasFlagSignal.set(value);
   }
-  public index: number = -1;
-  public value: number = -1;
-  public x: number = -1;
-  public y: number = -1;
+  public index = -1;
+  public value = -1;
+  public x = -1;
+  public y = -1;
   public get nearby(): number {
     return this.value >= 0 ? this.value : 0;
   }
@@ -53,7 +53,7 @@ export class SignalCell {
       this.y = cell.y ?? -1;
     }
   }
-  private _classes = computed(() => {
+  private _classes: Signal<IClasslist> = computed(() => {
     return {
       cell: true,
       hidden: this._isHiddenSignal(),
@@ -64,6 +64,13 @@ export class SignalCell {
     };
   })
   get classes(): IClasslist {
-    return this._classes();
+    return this._classes() ?? {
+      cell: true,
+      hidden: this.isHidden,
+      flag: this.hasFlag,
+      nearby: !!this.nearby && !this.hasFlag,
+      [`nearby-${this.nearby}`]: !!this.nearby,
+      mine: this.hasMine && !this.hasFlag
+    };
   }
 }

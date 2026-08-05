@@ -22,7 +22,7 @@ export class Utils {
    * @param maxCount The maximum number of elements the array may contain (inclusive, defaults to Infinity)
    * @returns True if the value is a valid array, false otherwise
    */
-  public static isGoodArray(value: unknown, minCount = 1, maxCount = Infinity): value is Array<unknown> {
+  public static isGoodArray(value: unknown, minCount = 1, maxCount = Infinity): value is unknown[] {
     if (!Utils.isGood(value)) {
       return false;
     }
@@ -97,6 +97,7 @@ export class Utils {
         isArray = Array.isArray(result);
         isObject = !isArray && typeof result === 'object';
       } catch {
+        // eslint-disable-next-line no-useless-assignment
         isArray = isObject = false;
         return false;
       }
@@ -166,7 +167,7 @@ export class Utils {
    * @param b The second array to compare
    * @returns True if the arrays have the same number, type, and value (using haveSameValue) of entries.
    */
-  public static haveSameValues<T extends Array<unknown>>(a: T, b: T): boolean {
+  public static haveSameValues<T extends unknown[]>(a: T, b: T): boolean {
     if ((!Utils.isGood(a) && Utils.isGood(b)) ||
         (Utils.isGood(a) && !Utils.isGood(b))) {
       return false;
@@ -183,8 +184,26 @@ export class Utils {
 
     return false;
   }
+  /**
+   * Converts a value to a number, returning undefined if the value is not a valid number.
+   * @param value The value to convert to a number
+   * @returns The number representation of the value, or undefined if the value is not a valid number.
+   */
+  public static toNumber(value: unknown): number | undefined {
+    if (Utils.isBad(value)) {
+      return undefined;
+    }
+    const num = Number(value);
+    return isNaN(num) ? undefined : num;
+  }
+  /**
+   * A no-operation function that does nothing.
+   */ 
+  public static noop(): void {
+    // No operation
+  }
   private static _randomValues = new Uint8Array(256);
-  private static _randomValuesBetween: Map<string, Uint8Array> = new Map();
+  private static _randomValuesBetween: Map<string, Uint8Array> = new Map<string, Uint8Array>();
   /**
    * Gets a cryptographically random value.
    */
